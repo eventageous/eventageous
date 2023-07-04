@@ -9,6 +9,7 @@ edition = "2021"
 anyhow = "1.0.71"
 serde =  { version = "1.0.164", features = ["derive"] }
 serde_json = "1.0"
-tokio = { version = "1.28.2", features = ["full"] }
+# tokio + WASM seems to need "sync","rt" 
+tokio = { version = "1.28.2", features = ["sync","rt"] }
 toml = "0.7.5"
 reqwest = "0.11"
