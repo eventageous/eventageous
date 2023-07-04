@@ -14,7 +14,7 @@ impl Configuration {
         Self::from_toml_in_file(&path)
     }
 
-    pub fn from_toml_in_file(path: &Path) -> anyhow::Result<Configuration> {
+    pub fn from_toml_in_file(path: &Path) -> anyhow::Result<Self> {
         let text = std::fs::read_to_string(path)?;
         Self::from_toml_str(&text)
     }
