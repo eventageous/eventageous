@@ -1,16 +1,10 @@
-//use google_calendar::Client;
-
-mod calendar;
-mod config;
-
 use std::sync::Arc;
-
-use calendar::Calendar;
-use serde::Deserialize;
+use unterstutzen::Calendar;
+use unterstutzen::Configuration;
 
 #[tokio::main]
 async fn main() -> Result<(), anyhow::Error> {
-    let config = Arc::new(config::Configuration::load()?);
+    let config = Arc::new(Configuration::load()?);
     let calendar = Calendar::from(&config);
     let events = calendar.events().await?;
     eprintln!("{events:#?}");

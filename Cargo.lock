@@ -12,6 +12,7 @@ dependencies = [
  "serde_json",
  "tokio",
  "toml",
+ "unterstutzen",
 ]
 
 [[package]]
@@ -949,6 +950,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5c5713f0fc4b5db668a2ac63cdb7bb4469d8c9fed047b1d0292cc7b0ce2ba921"
 dependencies = [
  "tinyvec",
+]
+
+[[package]]
+name = "unterstutzen"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "tokio",
+ "toml",
 ]
 
 [[package]]
