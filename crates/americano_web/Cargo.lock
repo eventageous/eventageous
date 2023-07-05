@@ -41,6 +41,7 @@ dependencies = [
 name = "americano_web"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "leptos",
  "unterstutzen",
 ]

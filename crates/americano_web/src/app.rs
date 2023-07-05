@@ -1,10 +1,12 @@
 use leptos::*;
+use std::sync::Arc;
+use unterstutzen::{Calendar, Configuration};
 
 #[component]
 pub fn App(cx: Scope) -> impl IntoView {
     let (count, set_count) = create_signal(cx, 0);
 
-    let values = create_resource(cx, || (), |_| async move { load_events().await });
+    let values = create_resource(cx, || (), |_| async move { load_events().await.unwrap() });
     view! { cx,
 
         <button
@@ -20,7 +22,7 @@ pub fn App(cx: Scope) -> impl IntoView {
         <p>"Events:"</p>
         {move || match values.read(cx) {
                 None => view! { cx, <p>"Loading events..."</p> }.into_view(cx),
-                Some(data) => view! { cx, 
+                Some(data) => view! { cx,
                         <ul>
                             {data.into_iter()
                             .map(|n| view! { cx, <li>{n}</li>})
@@ -31,6 +33,19 @@ pub fn App(cx: Scope) -> impl IntoView {
     }
 }
 
-async fn load_events() -> Vec<String> {
-   vec![String::from("one"), String::from("two"), String::from("three")]
+async fn load_events() -> anyhow::Result<Vec<String>> {
+    eprintln!("hi 0");
+    let config = Arc::new(Configuration::load()?);
+    eprintln!("hi 1");
+    let calendar = Calendar::from(&config);
+    eprintln!("hi 2");
+    let events = calendar.events().await?;
+    eprintln!("hi 3");
+    Ok(
+        events
+            .items
+            .iter()
+            .map(|e| format!("{e:?}"))
+            .collect()
+    )
 }
