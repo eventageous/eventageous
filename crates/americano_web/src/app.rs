@@ -34,13 +34,13 @@ pub fn App(cx: Scope) -> impl IntoView {
 }
 
 async fn load_events() -> anyhow::Result<Vec<String>> {
-    eprintln!("hi 0");
+    web_sys::console::log_1(&"hi 0".into());
     let config = Arc::new(Configuration::load()?);
-    eprintln!("hi 1");
+    web_sys::console::log_1(&"hi 1".into());
     let calendar = Calendar::from(&config);
-    eprintln!("hi 2");
+    web_sys::console::log_1(&"hi 2".into());
     let events = calendar.events().await?;
-    eprintln!("hi 3");
+    web_sys::console::log_1(&"hi 3".into());
     Ok(
         events
             .items

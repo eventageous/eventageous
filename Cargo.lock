@@ -13,6 +13,7 @@ dependencies = [
  "tokio",
  "toml",
  "unterstutzen",
+ "web-sys",
 ]
 
 [[package]]
