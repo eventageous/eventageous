@@ -9,17 +9,17 @@ pub struct Configuration {
 }
 
 impl Configuration {
-    pub fn load() -> anyhow::Result<Self> {
+    pub fn load() -> Result<Self, crate::Error> {
         let path = PathBuf::from("americano.toml");
         Self::from_toml_in_file(&path)
     }
 
-    pub fn from_toml_in_file(path: &Path) -> anyhow::Result<Self> {
+    pub fn from_toml_in_file(path: &Path) -> Result<Self, crate::Error> {
         let text = std::fs::read_to_string(path)?;
         Self::from_toml_str(&text)
     }
 
-    pub fn from_toml_str(text: &str) -> anyhow::Result<Configuration> {
+    pub fn from_toml_str(text: &str) -> Result<Self, crate::Error> {
         Ok(toml::from_str(text)?)
     }
 }
