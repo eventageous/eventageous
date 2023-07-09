@@ -23,20 +23,18 @@ pub fn App(cx: Scope) -> impl IntoView {
             </main>
         </Router>
     }
-    
 }
 
 /// Renders the home page of your application.
 #[component]
 fn HomePage(cx: Scope) -> impl IntoView {
-
     let (count, set_count) = create_signal(cx, 0);
-    let values = create_local_resource(cx, || (), |_| async move { load_fake_events().await.unwrap() });
+    let values = create_local_resource(cx, || (), |_| async move { load_events().await.unwrap() });
 
     view! { cx,
 
         <h1>"Americano ☕️"</h1>
-        
+
         <button
                 on:click=move |_| {
                     set_count.update(|n| *n += 1);
@@ -60,29 +58,13 @@ fn HomePage(cx: Scope) -> impl IntoView {
 
             }
         }
-    }   
+    }
 }
 
-/*
 #[server(LoadEvents, "/api", "GetJson")]
-async fn load_events() -> Result<Vec<String>,ServerFnError> {
-    web_sys::console::log_1(&"hi 0".into());
+async fn load_events() -> Result<Vec<String>, ServerFnError> {
     let config = Arc::new(Configuration::load()?);
-    web_sys::console::log_1(&"hi 1".into());
     let calendar = Calendar::from(&config);
-    web_sys::console::log_1(&"hi 2".into());
     let events = calendar.events().await?;
-    web_sys::console::log_1(&"hi 3".into());
-    Ok(
-        events
-            .items
-            .iter()
-            .map(|e| format!("{e:?}"))
-            .collect()
-    )
-}*/
-
-#[server(LoadFakeEvents, "/api", "GetJson")]
-async fn load_fake_events() -> Result<Vec<String>,ServerFnError> {
-  Ok(vec![String::from("one"), String::from("two"), String::from("three")])
+    Ok(events.items.iter().map(|e| format!("{e:?}")).collect())
 }
