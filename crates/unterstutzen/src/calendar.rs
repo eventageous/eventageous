@@ -31,7 +31,7 @@ impl From<&Arc<Configuration>> for Calendar {
 }
 
 impl Calendar {
-    pub async fn events(&self) -> anyhow::Result<Events> {
+    pub async fn events(&self) -> Result<Events, crate::Error> {
         let endpoint = format!(
             "https://www.googleapis.com/calendar/v3/calendars/{}/events?key={}",
             self.config.google_calendar_id, self.config.google_api_key
@@ -40,7 +40,8 @@ impl Calendar {
         let response = reqwest::get(endpoint).await?;
 
         if !response.status().is_success() {
-            anyhow::bail!("accesing calendar data failed: {response:?}");
+            //anyhow::bail!("accesing calendar data failed: {response:?}");
+            panic!("accesing calendar data failed: {response:?}");
         }
 
         let json_body = response.text().await?;
