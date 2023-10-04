@@ -1,3 +1,3 @@
 # Americano
 
-Experimental calendaring software.
+Experimental calendaring software 🤘
