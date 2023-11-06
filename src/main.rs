@@ -1,11 +1,18 @@
-use axum::{routing::get, Router};
+use axum::{routing::get, Json, Router};
 
 use tower_http::trace::{self, TraceLayer};
 use tracing::Level;
 
+use serde::Serialize;
 use std::sync::Arc;
 use unterstutzen::Calendar;
 use unterstutzen::Configuration;
+use unterstutzen::Events;
+
+#[derive(Debug, Serialize)]
+struct Response {
+    data: Events,
+}
 
 #[tokio::main]
 async fn main() {
@@ -25,14 +32,15 @@ async fn main() {
         .unwrap();
 }
 
-async fn handler() -> &'static str {
+async fn handler() -> Json<Response> {
     let config = Arc::new(Configuration::load().unwrap());
     let calendar = Calendar::from(&config);
     let events = calendar.events().await.unwrap();
-    tracing::info!("{events:#?}");
 
-    let response = "Check your console output!";
-    tracing::info!("handler: {}", response);
+    // pretend it's always sucessfull
+    let response = Response { data: events };
 
-    response
+    //tracing::info!("{}", serde_json::to_string_pretty(&response).unwrap());
+
+    Json(response)
 }

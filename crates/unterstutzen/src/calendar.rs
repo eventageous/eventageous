@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::config::Configuration;
 
@@ -8,14 +8,14 @@ pub struct Calendar {
     config: Arc<Configuration>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Events {
     pub summary: Option<String>,
     pub description: Option<String>,
     pub items: Vec<Event>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Event {
     pub summary: String,
     pub description: Option<String>,
