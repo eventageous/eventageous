@@ -16,10 +16,37 @@ pub struct Events {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Event {
     pub summary: String,
     pub description: Option<String>,
     pub location: Option<String>,
+    pub creator: Creator,
+    pub start: Option<Start>,
+    pub end: Option<End>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Creator {
+    pub email: Option<String>,
+    pub display_name: Option<String>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Start {
+    pub date: Option<String>,
+    pub date_time: Option<String>,
+    pub time_zone: Option<String>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct End {
+    pub date: Option<String>,
+    pub date_time: Option<String>,
+    pub time_zone: Option<String>,
 }
 
 impl From<&Arc<Configuration>> for Calendar {
