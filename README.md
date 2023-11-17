@@ -6,5 +6,5 @@ Experimental calendaring software 🤘
 Axum
 
 ## Frontend
-Prototype 1: Ember + Sass
-Prototype 2: NextJS + Tailwind (on the way)
+1. Prototype 1: Ember + Sass
+1. Prototype 2: NextJS + Tailwind (on the way)
