@@ -1,0 +1,13 @@
+<Base>
+<h2>Americano!</h2>
+
+<div class="events">
+    <ul class="event">
+        {{#each @model as |event|}}
+            <li>
+                <Event @event={{event}} />
+            </li>
+        {{/each}}
+    </ul>
+</div>
+</Base>
