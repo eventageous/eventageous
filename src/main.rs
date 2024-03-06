@@ -34,7 +34,7 @@ async fn handler(State(config): State<Arc<Configuration>>) -> Json<Response> {
     // pretend it's always sucessfull
     let response = Response { data: events };
 
-    tracing::info!("Got data from Google AP!");
+    tracing::info!("Got data from Google API!");
     //tracing::info!("{}", serde_json::to_string_pretty(&response).unwrap());
 
     Json(response)

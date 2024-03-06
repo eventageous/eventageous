@@ -534,7 +534,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("americano-frontend/app")["default"].create({"name":"americano-frontend","version":"0.0.0+7f523821"});
+            require("americano-frontend/app")["default"].create({"name":"americano-frontend","version":"0.0.0+b86b5ce2"});
           }
         
 //# sourceMappingURL=americano-frontend.map

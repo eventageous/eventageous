@@ -22,4 +22,4 @@ GOOGLE_API_KEY = "XXXX"
 GOOGLE_CALENDAR_ID = "YYY"
 ```
 
-Getting the API key and calendar ID is left as an exercise to the reader (i.e., I forget how I did it now, but I remember it took more time to figure out than I expected).
+Create an API key in your Google Cloud application, follow the _Credentials_ menu option and then _+ Create Credentials_ for _API Key_. Figuring out the details of how you want to set up your permissions and all the rest is an exercise to the reader.
