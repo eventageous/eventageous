@@ -6,11 +6,14 @@ pub enum Error {
     Io(#[from] std::io::Error),
 
     #[error(transparent)]
-    Tom(#[from] toml::de::Error),
+    Toml(#[from] toml::de::Error),
 
     #[error(transparent)]
     Json(#[from] serde_json::Error),
 
     #[error(transparent)]
     Request(#[from] reqwest::Error),
+
+    #[error(transparent)]
+    Var(#[from] std::env::VarError),
 }

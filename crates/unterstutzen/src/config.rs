@@ -9,6 +9,23 @@ pub struct Configuration {
 }
 
 impl Configuration {
+    pub fn new(google_api_key: String, google_calendar_id: String) -> Self {
+        Self {
+            google_api_key,
+            google_calendar_id,
+        }
+    }
+
+    pub fn from_env() -> Result<Self, crate::Error> {
+        let google_api_key = std::env::var("GOOGLE_API_KEY")?;
+        let google_calendar_id = std::env::var("GOOGLE_CALENDAR_ID")?;
+
+        Ok(Self {
+            google_api_key,
+            google_calendar_id,
+        })
+    }
+
     pub fn load() -> Result<Self, crate::Error> {
         let path = PathBuf::from("americano.toml");
         Self::from_toml_in_file(&path)
