@@ -13,7 +13,7 @@ async fn hello_world() -> &'static str {
 #[shuttle_runtime::main]
 async fn main() -> shuttle_axum::ShuttleAxum {
     let router = Router::new()
-        .nest_service("/", ServeDir::new("frontend-ember/dist"))
+        .nest_service("/", ServeDir::new("assets"))
         .route("/api/events", get(handler));
 
     Ok(router.into())
