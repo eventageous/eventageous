@@ -14,7 +14,7 @@ async fn hello_world() -> &'static str {
 async fn main() -> shuttle_axum::ShuttleAxum {
     let router = Router::new()
         .nest_service("/", ServeDir::new("frontend-ember/dist"))
-        .route("/api", get(handler));
+        .route("/api/events", get(handler));
 
     Ok(router.into())
 }
@@ -32,6 +32,7 @@ async fn handler() -> Json<Response> {
     // pretend it's always sucessfull
     let response = Response { data: events };
 
+    tracing::info!("Got data from Google AP!");
     //tracing::info!("{}", serde_json::to_string_pretty(&response).unwrap());
 
     Json(response)
