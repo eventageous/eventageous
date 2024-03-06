@@ -31,6 +31,7 @@ name = "americano"
 version = "0.1.0"
 dependencies = [
  "axum 0.7.4",
+ "chrono",
  "serde",
  "shuttle-axum",
  "shuttle-runtime",
@@ -265,8 +266,10 @@ checksum = "5bc015644b92d5890fab7489e49d21f879d5c990186827d42ec511919404f38b"
 dependencies = [
  "android-tzdata",
  "iana-time-zone",
+ "js-sys",
  "num-traits",
  "serde",
+ "wasm-bindgen",
  "windows-targets 0.52.4",
 ]
 
@@ -2153,12 +2156,15 @@ name = "unterstutzen"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "chrono",
  "reqwest",
  "serde",
  "serde_json",
  "thiserror",
  "tokio",
  "toml",
+ "tracing",
+ "urlencoding",
 ]
 
 [[package]]

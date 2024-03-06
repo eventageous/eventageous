@@ -1,14 +1,14 @@
 <article class="event">
   <div class="details">
-    <h3>{{@event.summary}}</h3>
+    <h3>{{@event.summary}} </h3>
+    <div class="detail">
+      <span>Start Time:</span> {{@event.start.dateTime}}
+    </div>
+    <div class="detail">
+      <span>End Time:</span> {{@event.end.dateTime}}
+    </div>
     <div class="detail location">
       <span>Location:</span> {{@event.location}}
-    </div>
-    <div class="detail">
-      <span>Start Date/Time:</span> {{@event.start.dateTime}}
-    </div>
-    <div class="detail">
-      <span>End Date/Time:</span> {{@event.end.dateTime}}
     </div>
     <div class="detail">
       <span>Creator:</span> {{@event.creator.displayName}} / {{@event.creator.email}}
