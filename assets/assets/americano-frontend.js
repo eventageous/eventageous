@@ -377,13 +377,13 @@
     <Base>
     <h2>About Americano</h2>
     <p>
-      Serving up an event calendar like an americano.
+      Experimental project for managing group event calendars, particularly in open source projects
     </p>
   </Base>
   */
   {
-    "id": "LckAm10W",
-    "block": "[[[8,[39,0],null,null,[[\"default\"],[[[[1,\"\\n  \"],[10,\"h2\"],[12],[1,\"About Americano\"],[13],[1,\"\\n  \"],[10,2],[12],[1,\"\\n    Serving up an event calendar like an americano.\\n  \"],[13],[1,\"\\n\"]],[]]]]]],[],false,[\"base\"]]",
+    "id": "kn+inKcS",
+    "block": "[[[8,[39,0],null,null,[[\"default\"],[[[[1,\"\\n  \"],[10,\"h2\"],[12],[1,\"About Americano\"],[13],[1,\"\\n  \"],[10,2],[12],[1,\"\\n    Experimental project for managing group event calendars, particularly in open source projects\\n  \"],[13],[1,\"\\n\"]],[]]]]]],[],false,[\"base\"]]",
     "moduleName": "americano-frontend/templates/about.hbs",
     "isStrictMode": false
   });
@@ -399,7 +399,7 @@
   var _default = _exports.default = (0, _templateFactory.createTemplateFactory)(
   /*
     <Base>
-  <h2>Americano!</h2>
+  <h2>Upcoming events</h2>
   
   <div class="events">
       <ul class="event">
@@ -413,8 +413,8 @@
   </Base>
   */
   {
-    "id": "K8arOU67",
-    "block": "[[[8,[39,0],null,null,[[\"default\"],[[[[1,\"\\n\"],[10,\"h2\"],[12],[1,\"Americano!\"],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"events\"],[12],[1,\"\\n    \"],[10,\"ul\"],[14,0,\"event\"],[12],[1,\"\\n\"],[42,[28,[37,2],[[28,[37,2],[[30,1]],null]],null],null,[[[1,\"            \"],[10,\"li\"],[12],[1,\"\\n                \"],[8,[39,3],null,[[\"@event\"],[[30,2]]],null],[1,\"\\n            \"],[13],[1,\"\\n\"]],[2]],null],[1,\"    \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[]]]]]],[\"@model\",\"event\"],false,[\"base\",\"each\",\"-track-array\",\"event\"]]",
+    "id": "zYSPEvS4",
+    "block": "[[[8,[39,0],null,null,[[\"default\"],[[[[1,\"\\n\"],[10,\"h2\"],[12],[1,\"Upcoming events\"],[13],[1,\"\\n\\n\"],[10,0],[14,0,\"events\"],[12],[1,\"\\n    \"],[10,\"ul\"],[14,0,\"event\"],[12],[1,\"\\n\"],[42,[28,[37,2],[[28,[37,2],[[30,1]],null]],null],null,[[[1,\"            \"],[10,\"li\"],[12],[1,\"\\n                \"],[8,[39,3],null,[[\"@event\"],[[30,2]]],null],[1,\"\\n            \"],[13],[1,\"\\n\"]],[2]],null],[1,\"    \"],[13],[1,\"\\n\"],[13],[1,\"\\n\"]],[]]]]]],[\"@model\",\"event\"],false,[\"base\",\"each\",\"-track-array\",\"event\"]]",
     "moduleName": "americano-frontend/templates/index.hbs",
     "isStrictMode": false
   });
@@ -534,7 +534,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("americano-frontend/app")["default"].create({"name":"americano-frontend","version":"0.0.0+1aa20ca0"});
+            require("americano-frontend/app")["default"].create({"name":"americano-frontend","version":"0.0.0+7f523821"});
           }
         
 //# sourceMappingURL=americano-frontend.map
