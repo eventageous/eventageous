@@ -24,9 +24,9 @@ async fn main() {
             .on_response(trace::DefaultOnResponse::new().level(Level::INFO)),
     );
 
-    tracing::info!("Listening on localhost:3000");
+    tracing::info!("Listening on localhost:3300");
 
-    axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
+    axum::Server::bind(&"0.0.0.0:3300".parse().unwrap())
         .serve(app.into_make_service())
         .await
         .unwrap();
