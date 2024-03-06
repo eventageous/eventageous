@@ -74,15 +74,15 @@
   /*
     <article class="event">
     <div class="details">
-      <h3>{{@event.summary}}</h3>
+      <h3>{{@event.summary}} </h3>
+      <div class="detail">
+        <span>Start Time:</span> {{@event.start.dateTime}}
+      </div>
+      <div class="detail">
+        <span>End Time:</span> {{@event.end.dateTime}}
+      </div>
       <div class="detail location">
         <span>Location:</span> {{@event.location}}
-      </div>
-      <div class="detail">
-        <span>Start Date/Time:</span> {{@event.start.dateTime}}
-      </div>
-      <div class="detail">
-        <span>End Date/Time:</span> {{@event.end.dateTime}}
       </div>
       <div class="detail">
         <span>Creator:</span> {{@event.creator.displayName}} / {{@event.creator.email}}
@@ -94,8 +94,8 @@
   </article>
   */
   {
-    "id": "lglGnt08",
-    "block": "[[[10,\"article\"],[14,0,\"event\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"details\"],[12],[1,\"\\n    \"],[10,\"h3\"],[12],[1,[30,1,[\"summary\"]]],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail location\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Location:\"],[13],[1,\" \"],[1,[30,1,[\"location\"]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Start Date/Time:\"],[13],[1,\" \"],[1,[30,1,[\"start\",\"dateTime\"]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"End Date/Time:\"],[13],[1,\" \"],[1,[30,1,[\"end\",\"dateTime\"]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Creator:\"],[13],[1,\" \"],[1,[30,1,[\"creator\",\"displayName\"]]],[1,\" / \"],[1,[30,1,[\"creator\",\"email\"]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Description:\"],[13],[1,\" \"],[1,[30,1,[\"description\"]]],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13]],[\"@event\"],false,[]]",
+    "id": "R973vXlF",
+    "block": "[[[10,\"article\"],[14,0,\"event\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"details\"],[12],[1,\"\\n    \"],[10,\"h3\"],[12],[1,[30,1,[\"summary\"]]],[1,\" \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Start Time:\"],[13],[1,\" \"],[1,[30,1,[\"start\",\"dateTime\"]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"End Time:\"],[13],[1,\" \"],[1,[30,1,[\"end\",\"dateTime\"]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail location\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Location:\"],[13],[1,\" \"],[1,[30,1,[\"location\"]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Creator:\"],[13],[1,\" \"],[1,[30,1,[\"creator\",\"displayName\"]]],[1,\" / \"],[1,[30,1,[\"creator\",\"email\"]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Description:\"],[13],[1,\" \"],[1,[30,1,[\"description\"]]],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13]],[\"@event\"],false,[]]",
     "moduleName": "americano-frontend/components/event.hbs",
     "isStrictMode": false
   });
@@ -315,7 +315,7 @@
   0; //eaimeta@70e063a35619d71f0,"@ember/routing/route"eaimeta@70e063a35619d71f
   class IndexRoute extends _route.default {
     async model() {
-      let response = await fetch('/api/events.json');
+      let response = await fetch('/api/events');
       let {
         data
       } = await response.json();
@@ -532,7 +532,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("americano-frontend/app")["default"].create({"name":"americano-frontend","version":"0.0.0+41897212"});
+            require("americano-frontend/app")["default"].create({"name":"americano-frontend","version":"0.0.0+3eae91b7"});
           }
         
 //# sourceMappingURL=americano-frontend.map
