@@ -10,61 +10,6 @@ var __ember_auto_import__;
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "@ember/application":
-/*!*************************************!*\
-  !*** external "@ember/application" ***!
-  \*************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("@ember/application");
-
-/***/ }),
-
-/***/ "@ember/component":
-/*!***********************************!*\
-  !*** external "@ember/component" ***!
-  \***********************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("@ember/component");
-
-/***/ }),
-
-/***/ "@ember/component/helper":
-/*!******************************************!*\
-  !*** external "@ember/component/helper" ***!
-  \******************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("@ember/component/helper");
-
-/***/ }),
-
-/***/ "@ember/debug":
-/*!*******************************!*\
-  !*** external "@ember/debug" ***!
-  \*******************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("@ember/debug");
-
-/***/ }),
-
-/***/ "@ember/object/internals":
-/*!******************************************!*\
-  !*** external "@ember/object/internals" ***!
-  \******************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("@ember/object/internals");
-
-/***/ }),
-
 /***/ "@ember/runloop":
 /*!*********************************!*\
   !*** external "@ember/runloop" ***!
@@ -76,78 +21,67 @@ module.exports = require("@ember/runloop");
 
 /***/ }),
 
-/***/ "@ember/service":
-/*!*********************************!*\
-  !*** external "@ember/service" ***!
-  \*********************************/
+/***/ "@ember/test-helpers":
+/*!**************************************!*\
+  !*** external "@ember/test-helpers" ***!
+  \**************************************/
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("@ember/service");
+module.exports = require("@ember/test-helpers");
 
 /***/ }),
 
-/***/ "@ember/template-factory":
-/*!******************************************!*\
-  !*** external "@ember/template-factory" ***!
-  \******************************************/
+/***/ "@ember/test/adapter":
+/*!**************************************!*\
+  !*** external "@ember/test/adapter" ***!
+  \**************************************/
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("@ember/template-factory");
+module.exports = require("@ember/test/adapter");
 
 /***/ }),
 
-/***/ "@ember/utils":
-/*!*******************************!*\
-  !*** external "@ember/utils" ***!
-  \*******************************/
+/***/ "ember":
+/*!************************!*\
+  !*** external "ember" ***!
+  \************************/
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("@ember/utils");
+module.exports = require("ember");
 
 /***/ }),
 
-/***/ "@ember/version":
-/*!*********************************!*\
-  !*** external "@ember/version" ***!
-  \*********************************/
+/***/ "ember-cli-test-loader/test-support/index":
+/*!***********************************************************!*\
+  !*** external "ember-cli-test-loader/test-support/index" ***!
+  \***********************************************************/
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("@ember/version");
+module.exports = require("ember-cli-test-loader/test-support/index");
 
 /***/ }),
 
-/***/ "@glimmer/component":
-/*!*************************************!*\
-  !*** external "@glimmer/component" ***!
-  \*************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("@glimmer/component");
-
-/***/ }),
-
-/***/ "../../../../../tmp/broccoli-302087GpwV1k4SQWPh/cache-232-webpack_bundler_ember_auto_import_webpack/app.cjs":
-/*!******************************************************************************************************************!*\
-  !*** ../../../../../tmp/broccoli-302087GpwV1k4SQWPh/cache-232-webpack_bundler_ember_auto_import_webpack/app.cjs ***!
-  \******************************************************************************************************************/
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-eval("\nmodule.exports = (function(){\n  var d = _eai_d;\n  var r = _eai_r;\n  window.emberAutoImportDynamic = function(specifier) {\n    if (arguments.length === 1) {\n      return r('_eai_dyn_' + specifier);\n    } else {\n      return r('_eai_dynt_' + specifier)(Array.prototype.slice.call(arguments, 1))\n    }\n  };\n  window.emberAutoImportSync = function(specifier) {\n    return r('_eai_sync_' + specifier)(Array.prototype.slice.call(arguments, 1))\n  };\n    d('ember-page-title/helpers/page-title', ['@ember/service','@ember/component/helper','@ember/object/internals'], function() { return __webpack_require__(/*! ember-page-title/helpers/page-title */ \"./node_modules/ember-page-title/dist/helpers/page-title.js\"); });\n    d('ember-page-title/services/page-title', ['@ember/application','@ember/runloop','@ember/service','@ember/utils','@ember/debug'], function() { return __webpack_require__(/*! ember-page-title/services/page-title */ \"./node_modules/ember-page-title/dist/services/page-title.js\"); });\n    d('ember-welcome-page/components/welcome-page', ['@ember/component','@ember/application','@ember/version','@glimmer/component','@ember/template-factory'], function() { return __webpack_require__(/*! ember-welcome-page/components/welcome-page */ \"./node_modules/ember-welcome-page/dist/components/welcome-page.js\"); });\n})();\n\n\n//# sourceURL=webpack://__ember_auto_import__/../../../../../tmp/broccoli-302087GpwV1k4SQWPh/cache-232-webpack_bundler_ember_auto_import_webpack/app.cjs?");
-
-/***/ }),
-
-/***/ "../../../../../tmp/broccoli-302087GpwV1k4SQWPh/cache-232-webpack_bundler_ember_auto_import_webpack/l.cjs":
+/***/ "../../../../../tmp/broccoli-309868cwjvQ25te7bU/cache-232-webpack_bundler_ember_auto_import_webpack/l.cjs":
 /*!****************************************************************************************************************!*\
-  !*** ../../../../../tmp/broccoli-302087GpwV1k4SQWPh/cache-232-webpack_bundler_ember_auto_import_webpack/l.cjs ***!
+  !*** ../../../../../tmp/broccoli-309868cwjvQ25te7bU/cache-232-webpack_bundler_ember_auto_import_webpack/l.cjs ***!
   \****************************************************************************************************************/
 /***/ (function(module, exports) {
 
-eval("\nwindow._eai_r = require;\nwindow._eai_d = define;\n\n\n//# sourceURL=webpack://__ember_auto_import__/../../../../../tmp/broccoli-302087GpwV1k4SQWPh/cache-232-webpack_bundler_ember_auto_import_webpack/l.cjs?");
+eval("\nwindow._eai_r = require;\nwindow._eai_d = define;\n\n\n//# sourceURL=webpack://__ember_auto_import__/../../../../../tmp/broccoli-309868cwjvQ25te7bU/cache-232-webpack_bundler_ember_auto_import_webpack/l.cjs?");
+
+/***/ }),
+
+/***/ "../../../../../tmp/broccoli-309868cwjvQ25te7bU/cache-232-webpack_bundler_ember_auto_import_webpack/tests.cjs":
+/*!********************************************************************************************************************!*\
+  !*** ../../../../../tmp/broccoli-309868cwjvQ25te7bU/cache-232-webpack_bundler_ember_auto_import_webpack/tests.cjs ***!
+  \********************************************************************************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("\nmodule.exports = (function(){\n  var d = _eai_d;\n  var r = _eai_r;\n  window.emberAutoImportDynamic = function(specifier) {\n    if (arguments.length === 1) {\n      return r('_eai_dyn_' + specifier);\n    } else {\n      return r('_eai_dynt_' + specifier)(Array.prototype.slice.call(arguments, 1))\n    }\n  };\n  window.emberAutoImportSync = function(specifier) {\n    return r('_eai_sync_' + specifier)(Array.prototype.slice.call(arguments, 1))\n  };\n    d('ember-qunit', ['@ember/test/adapter','ember-cli-test-loader/test-support/index','@ember/runloop','@ember/test-helpers','ember'], function() { return __webpack_require__(/*! ember-qunit */ \"./node_modules/ember-qunit/dist/index.js\"); });\n    d('qunit', [], function() { return __webpack_require__(/*! qunit */ \"./node_modules/qunit/qunit/qunit.js\"); });\n})();\n\n\n//# sourceURL=webpack://__ember_auto_import__/../../../../../tmp/broccoli-309868cwjvQ25te7bU/cache-232-webpack_bundler_ember_auto_import_webpack/tests.cjs?");
 
 /***/ })
 
@@ -166,12 +100,15 @@ eval("\nwindow._eai_r = require;\nwindow._eai_d = define;\n\n\n//# sourceURL=web
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
 /******/ 			id: moduleId,
-/******/ 			// no module.loaded needed
+/******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -253,6 +190,15 @@ eval("\nwindow._eai_r = require;\nwindow._eai_d = define;\n\n\n//# sourceURL=web
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/node module decorator */
+/******/ 	(() => {
+/******/ 		__webpack_require__.nmd = (module) => {
+/******/ 			module.paths = [];
+/******/ 			if (!module.children) module.children = [];
+/******/ 			return module;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/jsonp chunk loading */
 /******/ 	(() => {
 /******/ 		// no baseURI
@@ -261,7 +207,7 @@ eval("\nwindow._eai_r = require;\nwindow._eai_d = define;\n\n\n//# sourceURL=web
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
-/******/ 			"app": 0
+/******/ 			"tests": 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading
@@ -316,8 +262,8 @@ eval("\nwindow._eai_r = require;\nwindow._eai_d = define;\n\n\n//# sourceURL=web
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_ember-page-title_dist_helpers_page-title_js-node_modules_ember-page-titl-9a1fdf"], () => (__webpack_require__("../../../../../tmp/broccoli-302087GpwV1k4SQWPh/cache-232-webpack_bundler_ember_auto_import_webpack/l.cjs")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_ember-page-title_dist_helpers_page-title_js-node_modules_ember-page-titl-9a1fdf"], () => (__webpack_require__("../../../../../tmp/broccoli-302087GpwV1k4SQWPh/cache-232-webpack_bundler_ember_auto_import_webpack/app.cjs")))
+/******/ 	__webpack_require__.O(undefined, ["vendors-node_modules_ember-qunit_dist_index_js"], () => (__webpack_require__("../../../../../tmp/broccoli-309868cwjvQ25te7bU/cache-232-webpack_bundler_ember_auto_import_webpack/l.cjs")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_ember-qunit_dist_index_js"], () => (__webpack_require__("../../../../../tmp/broccoli-309868cwjvQ25te7bU/cache-232-webpack_bundler_ember_auto_import_webpack/tests.cjs")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	__ember_auto_import__ = __webpack_exports__;
 /******/ 	
