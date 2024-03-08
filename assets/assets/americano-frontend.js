@@ -76,10 +76,10 @@
     <div class="details">
       <h3>{{@event.summary}} </h3>
       <div class="detail">
-        <span>Start Time:</span> {{@event.start.dateTime}}
+        <span>Start Time:</span> {{@event.startDatetime}}
       </div>
       <div class="detail">
-        <span>End Time:</span> {{@event.end.dateTime}}
+        <span>End Time:</span> {{@event.endDatetime}}
       </div>
       <div class="detail location">
         <span>Location:</span>
@@ -87,7 +87,7 @@
           <a href="{{@event.location}}">{{@event.location}}</a>
       </div>
       <div class="detail">
-        <span>Creator:</span> {{@event.creator.displayName}} / {{@event.creator.email}}
+        <span>Creator:</span> {{@event.creatorName}} / {{@event.creatorEmail}}
       </div>
       <div class="detail">
         <span>Description:</span> {{@event.description}}
@@ -96,8 +96,8 @@
   </article>
   */
   {
-    "id": "jAcdwVU9",
-    "block": "[[[10,\"article\"],[14,0,\"event\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"details\"],[12],[1,\"\\n    \"],[10,\"h3\"],[12],[1,[30,1,[\"summary\"]]],[1,\" \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Start Time:\"],[13],[1,\" \"],[1,[30,1,[\"start\",\"dateTime\"]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"End Time:\"],[13],[1,\" \"],[1,[30,1,[\"end\",\"dateTime\"]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail location\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Location:\"],[13],[1,\"\\n        \"],[3,\" how do I make this only happen if location starts with https? \"],[1,\"-\\n        \"],[10,3],[15,6,[29,[[30,1,[\"location\"]]]]],[12],[1,[30,1,[\"location\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Creator:\"],[13],[1,\" \"],[1,[30,1,[\"creator\",\"displayName\"]]],[1,\" / \"],[1,[30,1,[\"creator\",\"email\"]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Description:\"],[13],[1,\" \"],[1,[30,1,[\"description\"]]],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13]],[\"@event\"],false,[]]",
+    "id": "vnYfNvNR",
+    "block": "[[[10,\"article\"],[14,0,\"event\"],[12],[1,\"\\n  \"],[10,0],[14,0,\"details\"],[12],[1,\"\\n    \"],[10,\"h3\"],[12],[1,[30,1,[\"summary\"]]],[1,\" \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Start Time:\"],[13],[1,\" \"],[1,[30,1,[\"startDatetime\"]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"End Time:\"],[13],[1,\" \"],[1,[30,1,[\"endDatetime\"]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail location\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Location:\"],[13],[1,\"\\n        \"],[3,\" how do I make this only happen if location starts with https? \"],[1,\"-\\n        \"],[10,3],[15,6,[29,[[30,1,[\"location\"]]]]],[12],[1,[30,1,[\"location\"]]],[13],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Creator:\"],[13],[1,\" \"],[1,[30,1,[\"creatorName\"]]],[1,\" / \"],[1,[30,1,[\"creatorEmail\"]]],[1,\"\\n    \"],[13],[1,\"\\n    \"],[10,0],[14,0,\"detail\"],[12],[1,\"\\n      \"],[10,1],[12],[1,\"Description:\"],[13],[1,\" \"],[1,[30,1,[\"description\"]]],[1,\"\\n    \"],[13],[1,\"\\n  \"],[13],[1,\"\\n\"],[13]],[\"@event\"],false,[]]",
     "moduleName": "americano-frontend/components/event.hbs",
     "isStrictMode": false
   });
@@ -318,11 +318,13 @@
   class IndexRoute extends _route.default {
     async model() {
       let response = await fetch('/api/events');
+      console.log("Response:");
+      console.log(response);
       let {
         data
       } = await response.json();
-      console.log(data.items);
-      return data.items;
+      console.log(data.events);
+      return data.events;
     }
   }
   _exports.default = IndexRoute;
@@ -534,7 +536,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("americano-frontend/app")["default"].create({"name":"americano-frontend","version":"0.0.0+b86b5ce2"});
+            require("americano-frontend/app")["default"].create({"name":"americano-frontend","version":"0.0.0+e3123268"});
           }
         
 //# sourceMappingURL=americano-frontend.map

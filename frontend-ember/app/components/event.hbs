@@ -2,10 +2,10 @@
   <div class="details">
     <h3>{{@event.summary}} </h3>
     <div class="detail">
-      <span>Start Time:</span> {{@event.start.dateTime}}
+      <span>Start Time:</span> {{@event.startDatetime}}
     </div>
     <div class="detail">
-      <span>End Time:</span> {{@event.end.dateTime}}
+      <span>End Time:</span> {{@event.endDatetime}}
     </div>
     <div class="detail location">
       <span>Location:</span>
@@ -13,7 +13,7 @@
         <a href="{{@event.location}}">{{@event.location}}</a>
     </div>
     <div class="detail">
-      <span>Creator:</span> {{@event.creator.displayName}} / {{@event.creator.email}}
+      <span>Creator:</span> {{@event.creatorName}} / {{@event.creatorEmail}}
     </div>
     <div class="detail">
       <span>Description:</span> {{@event.description}}

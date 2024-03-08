@@ -5,7 +5,7 @@ use std::sync::Arc;
 use tower_http::services::ServeDir;
 use unterstutzen::Calendar;
 use unterstutzen::Configuration;
-use unterstutzen::Events;
+use unterstutzen::AmericanoEvents;
 
 #[shuttle_runtime::main]
 async fn main(#[shuttle_secrets::Secrets] secret_store: SecretStore) -> shuttle_axum::ShuttleAxum {
@@ -24,7 +24,7 @@ async fn main(#[shuttle_secrets::Secrets] secret_store: SecretStore) -> shuttle_
 
 #[derive(Debug, Serialize)]
 struct Response {
-    data: Events,
+    data: AmericanoEvents,
 }
 
 async fn handler(State(config): State<Arc<Configuration>>) -> Json<Response> {
