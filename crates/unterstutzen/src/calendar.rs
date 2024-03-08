@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
+use chrono::{Datelike, Utc};
 use serde::{Deserialize, Serialize};
 use urlencoding::encode;
-use chrono::{Utc, Datelike};
 
 use crate::config::Configuration;
 
@@ -60,16 +60,17 @@ impl From<&Arc<Configuration>> for Calendar {
 }
 
 impl Calendar {
-    pub async fn events(&self) -> Result<Events, crate::Error> {
-
-        // Limit the time range for a year for the moment to see future events for the next year, 
+    pub async fn events(&self) -> anyhow::Result<Events> {
+        // Limit the time range for a year for the moment to see future events for the next year,
         // with a max result count of 500 for this result page
         // TODO: better query and filtering
         let start_date = Utc::now();
         let start_date_formatted = start_date.to_rfc3339();
         let time_min = encode(&start_date_formatted);
 
-        let end_date = start_date.with_year(start_date.year() + 1).expect("Failed to add one year");
+        let end_date = start_date
+            .with_year(start_date.year() + 1)
+            .expect("Failed to add one year");
         let end_date_formatted = end_date.to_rfc3339();
         let time_max = encode(&end_date_formatted);
 

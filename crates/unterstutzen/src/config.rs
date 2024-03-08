@@ -16,7 +16,7 @@ impl Configuration {
         }
     }
 
-    pub fn from_env() -> Result<Self, crate::Error> {
+    pub fn from_env() -> anyhow::Result<Self> {
         let google_api_key = std::env::var("GOOGLE_API_KEY")?;
         let google_calendar_id = std::env::var("GOOGLE_CALENDAR_ID")?;
 
@@ -26,17 +26,17 @@ impl Configuration {
         })
     }
 
-    pub fn load() -> Result<Self, crate::Error> {
+    pub fn load() -> anyhow::Result<Self> {
         let path = PathBuf::from("americano.toml");
         Self::from_toml_in_file(&path)
     }
 
-    pub fn from_toml_in_file(path: &Path) -> Result<Self, crate::Error> {
+    pub fn from_toml_in_file(path: &Path) -> anyhow::Result<Self> {
         let text = std::fs::read_to_string(path)?;
         Self::from_toml_str(&text)
     }
 
-    pub fn from_toml_str(text: &str) -> Result<Self, crate::Error> {
+    pub fn from_toml_str(text: &str) -> anyhow::Result<Self> {
         Ok(toml::from_str(text)?)
     }
 }
