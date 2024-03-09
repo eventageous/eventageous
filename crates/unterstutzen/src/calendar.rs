@@ -65,7 +65,9 @@ pub struct AmericanoEvent {
     pub creator_email: String,
     pub creator_name: String,
     pub start_datetime: String,
+    pub start_timezone: String,
     pub end_datetime: String,
+    pub end_timezone: String,
 }
 
 impl From<&Arc<Configuration>> for Calendar {
@@ -119,6 +121,23 @@ impl Calendar {
                 .unwrap()
                 .clone();
 
+            let start_timezone = g_event
+                .start
+                .as_ref()
+                .unwrap()
+                .time_zone
+                .as_ref()
+                .unwrap()
+                .clone();
+            let end_timezone = g_event
+                .end
+                .as_ref()
+                .unwrap()
+                .time_zone
+                .as_ref()
+                .unwrap()
+                .clone();
+
             let creator_email = g_event.creator.email.as_ref().unwrap().clone();
             let creator_name = g_event.creator.display_name.as_ref().unwrap().clone();
 
@@ -129,7 +148,9 @@ impl Calendar {
                 creator_email: creator_email,
                 creator_name: creator_name,
                 start_datetime: start_datetime,
+                start_timezone: start_timezone,
                 end_datetime: end_datetime,
+                end_timezone: end_timezone,
             };
             v.push(event);
         }

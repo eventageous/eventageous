@@ -2,15 +2,15 @@
   <div class="details">
     <h3>{{@event.summary}} </h3>
     <div class="detail">
-      <span>Start Time:</span> {{@event.startDatetime}}
+      <span>Start Time:</span> {{formatDate @event.startDatetime @event.startTimezone}}
     </div>
     <div class="detail">
-      <span>End Time:</span> {{@event.endDatetime}}
+      <span>End Time:</span> {{formatDate @event.endDatetime @event.endTimezone}}
     </div>
     <div class="detail location">
       <span>Location:</span>
-        <!-- how do I make this only happen if location starts with https? -->-
-        <a href="{{@event.location}}">{{@event.location}}</a>
+      <!-- how do I make this only happen if location starts with https? -->-
+      <a href="{{@event.location}}">{{@event.location}}</a>
     </div>
     <div class="detail">
       <span>Creator:</span> {{@event.creatorName}} / {{@event.creatorEmail}}
