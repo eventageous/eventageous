@@ -1,10 +1,9 @@
 pub mod calendar_transformer {
-    use crate::calendar::AmericanoEvent;
-    use crate::calendar::AmericanoEvents;
-    use crate::google_calendar::Events;
+    use crate::calendar::Event;
+    use crate::calendar::Events;
 
-    pub fn google_to_americano(g_events: Events) -> AmericanoEvents {
-        let mut v: Vec<AmericanoEvent> = Vec::with_capacity(g_events.items.capacity());
+    pub fn google_to_americano(g_events: crate::google_calendar::Events) -> Events {
+        let mut v: Vec<Event> = Vec::with_capacity(g_events.items.capacity());
         for g_event in g_events.items.iter() {
             // Some ad hoc validation
             if g_event.start.is_none()
@@ -57,7 +56,7 @@ pub mod calendar_transformer {
             let creator_email = g_event.creator.email.as_ref().unwrap().clone();
             let creator_name = g_event.creator.display_name.as_ref().unwrap().clone();
 
-            let event = AmericanoEvent {
+            let event = Event {
                 summary: g_event.summary.clone(),
                 description: g_event.description.clone(),
                 location: g_event.location.clone(),
@@ -71,6 +70,6 @@ pub mod calendar_transformer {
             v.push(event);
         }
 
-        AmericanoEvents { events: v }
+        Events { events: v }
     }
 }

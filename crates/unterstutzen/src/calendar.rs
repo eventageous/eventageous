@@ -2,7 +2,6 @@ use std::sync::Arc;
 
 use serde::{Deserialize, Serialize};
 
-use crate::calendar_transformer;
 use crate::calendar_transformer::calendar_transformer::google_to_americano;
 use crate::config::Configuration;
 use crate::google_calendar::GoogleCalendar;
@@ -12,13 +11,13 @@ pub struct Calendar {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct AmericanoEvents {
-    pub events: Vec<AmericanoEvent>,
+pub struct Events {
+    pub events: Vec<Event>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct AmericanoEvent {
+pub struct Event {
     pub summary: String,
     pub description: Option<String>,
     pub location: Option<String>,
@@ -39,7 +38,7 @@ impl From<&Arc<Configuration>> for Calendar {
 }
 
 impl Calendar {
-    pub async fn events(&self) -> anyhow::Result<AmericanoEvents> {
+    pub async fn events(&self) -> anyhow::Result<Events> {
         // Using Google Calendar API behind the scenes
 
         let google_calendar = GoogleCalendar::from(&self.config.clone());

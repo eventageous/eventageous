@@ -3,9 +3,9 @@ use serde::Serialize;
 use shuttle_secrets::SecretStore;
 use std::sync::Arc;
 use tower_http::services::ServeDir;
-use unterstutzen::AmericanoEvents;
 use unterstutzen::Calendar;
 use unterstutzen::Configuration;
+use unterstutzen::Events;
 
 #[shuttle_runtime::main]
 async fn main(#[shuttle_secrets::Secrets] secret_store: SecretStore) -> shuttle_axum::ShuttleAxum {
@@ -24,7 +24,7 @@ async fn main(#[shuttle_secrets::Secrets] secret_store: SecretStore) -> shuttle_
 
 #[derive(Debug, Serialize)]
 struct Response {
-    data: AmericanoEvents,
+    data: Events,
 }
 
 async fn handler(State(config): State<Arc<Configuration>>) -> Json<Response> {
