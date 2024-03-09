@@ -1,15 +1,14 @@
 # How to setup your system to contribute to Americano
 
-- Install [shuttle CLI](https://docs.shuttle.rs/getting-started/installation#from-source): `cargo install cargo-shuttle`
-- You can run a local instance by doing `cargo shuttle run`
-    - You will need to setup [secrets](#secrets)
-
-## To work on the front-end
-
-The front-end is based on ember. If you are making changes there you will need to install npm and the ember CLI:
-
-- Install npm
+- Install NPM version documented in the `.tool-versions` file (as of this writing, 20)
+  - You can use [asdf-vm](https://asdf-vm.com/) if that's your thing
 - Install [ember CLI](https://cli.emberjs.com/release/): `npm install -g ember`
+- Install [shuttle CLI](https://docs.shuttle.rs/getting-started/installation#from-source): `cargo install cargo-shuttle`
+- Build ember front-end by running these commands from the `frontend-ember` directory:
+  - `npm install` -- first time only
+  - `ember build` -- after making changes
+- Setup [secrets](#secrets)
+- Run a local instance by doing `cargo shuttle run` from the main project directory
 
 ## Secrets
 

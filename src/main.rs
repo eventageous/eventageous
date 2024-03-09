@@ -3,9 +3,9 @@ use serde::Serialize;
 use shuttle_secrets::SecretStore;
 use std::sync::Arc;
 use tower_http::services::ServeDir;
+use unterstutzen::AmericanoEvents;
 use unterstutzen::Calendar;
 use unterstutzen::Configuration;
-use unterstutzen::AmericanoEvents;
 
 #[shuttle_runtime::main]
 async fn main(#[shuttle_secrets::Secrets] secret_store: SecretStore) -> shuttle_axum::ShuttleAxum {
@@ -15,7 +15,7 @@ async fn main(#[shuttle_secrets::Secrets] secret_store: SecretStore) -> shuttle_
     let config = Arc::new(Configuration::new(google_api_key, google_calendar_id));
 
     let router = Router::new()
-        .nest_service("/", ServeDir::new("assets"))
+        .nest_service("/", ServeDir::new("dist"))
         .route("/api/events", get(handler))
         .with_state(config);
 

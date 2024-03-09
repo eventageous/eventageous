@@ -4,5 +4,5 @@
     rather than JavaScript by default, when a TypeScript version of a given blueprint is available.
   */
   "isTypeScriptProject": false,
-  "output-path": "../assets"
+  "output-path": "../dist"
 }
