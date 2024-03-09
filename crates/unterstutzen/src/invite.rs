@@ -1,7 +1,7 @@
 use mail_parser::{Message, MessageParser, MimeHeaders};
 use tracing::info;
 
-use crate::{Creator, End, Event, Start};
+use crate::google_calendar::{Creator, End, Event, Start};
 
 #[derive(Default, Debug)]
 pub struct CalendarEmail {
