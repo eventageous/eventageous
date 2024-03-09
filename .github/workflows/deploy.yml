@@ -10,6 +10,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Install asdf & tools
+        uses: asdf-vm/actions/install@v3
+      - run: npm install -g ember-cli
+      - run: cd frontend-ember; ember build
       - uses: shuttle-hq/deploy-action@main
         with:
           deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
