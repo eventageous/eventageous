@@ -24,8 +24,9 @@ pub struct Event {
     pub description: Option<String>,
     pub location: Option<String>,
     pub creator: Creator,
-    pub start: Option<Start>,
-    pub end: Option<End>,
+    pub start: Option<EventDate>,
+    pub end: Option<EventDate>,
+    pub original_start_time: Option<EventDate>,
 }
 
 #[derive(Default, Debug, Deserialize, Serialize)]
@@ -37,15 +38,7 @@ pub struct Creator {
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Start {
-    pub date: Option<String>,
-    pub date_time: Option<String>,
-    pub time_zone: Option<String>,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct End {
+pub struct EventDate {
     pub date: Option<String>,
     pub date_time: Option<String>,
     pub time_zone: Option<String>,

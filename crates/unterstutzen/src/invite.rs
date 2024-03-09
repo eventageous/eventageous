@@ -1,7 +1,7 @@
 use mail_parser::{Message, MessageParser, MimeHeaders};
 use tracing::info;
 
-use crate::google_calendar::{Creator, End, Event, Start};
+use crate::google_calendar::{Creator, Event, EventDate};
 
 #[derive(Default, Debug)]
 pub struct CalendarEmail {
@@ -87,24 +87,30 @@ impl CalendarEmail {
                 })
             })
             .unwrap_or_default();
-        let start = event.property("DTSTART").map(|s| Start {
+        let start = event.property("DTSTART").map(|s| EventDate {
             date_time: Some(s),
             date: None,
             time_zone: None,
         });
-        let end = event.property("DTEND").map(|s| End {
+        let end = event.property("DTEND").map(|s| EventDate {
             date_time: Some(s),
             date: None,
             time_zone: None,
         });
-
+        // TODO: not sure this should be set for parsing this
+        let original_start = event.property("DTSTART").map(|s| EventDate {
+            date_time: Some(s),
+            date: None,
+            time_zone: None,
+        });
         Ok(Event {
             summary: summary,
             description: description,
             location: location,
+            creator,
             start,
             end,
-            creator,
+            original_start_time: original_start,
         })
     }
 }
