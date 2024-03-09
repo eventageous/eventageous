@@ -1,4 +1,4 @@
-import Component from '@glimmer/component';
+import Component from '@ember/component';
 import { htmlSafe } from '@ember/template';
 
 export default class Event extends Component {
@@ -25,4 +25,11 @@ export default class Event extends Component {
         return description;
     }
 
+    actions = {
+        subscribe(event) {
+            alert("Not yet! :-)");
+            console.log("Not yet! :-)");
+        }
+    }
 }
+

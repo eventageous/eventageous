@@ -1,6 +1,6 @@
 <article class="event">
   <div class="details">
-    <h3>{{@event.summary}} </h3>
+    <h3>{{@event.summary}} </h3> <button {{action "subscribe" }}>subscribe</button>
     <div class="detail">
       <span>Start Time:</span> {{formatDate @event.startDatetime @event.startTimezone}}
     </div>

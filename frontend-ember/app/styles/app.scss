@@ -363,7 +363,7 @@ p {
 }
 
 .event .detail {
-  flex-basis: 50%;
+  flex-basis: 100%;
   font-weight: 300;
   font-style: italic;
   white-space: nowrap;
@@ -431,7 +431,8 @@ p {
   height: auto;
 }
 
-@media only screen and (width <= 919px) {
+@media only screen and (width <=919px) {
+
   .event.detailed .image,
   .event.detailed .image.large {
     margin: 30px 25px 25px;
