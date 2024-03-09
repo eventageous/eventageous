@@ -28,7 +28,7 @@ pub struct Event {
     pub end: Option<End>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Creator {
     pub email: Option<String>,
@@ -77,37 +77,47 @@ impl From<&Arc<Configuration>> for Calendar {
 }
 
 impl Calendar {
-
     pub async fn events(&self) -> anyhow::Result<AmericanoEvents> {
         let g_events = self.events_google_api().await.unwrap();
 
-
         // Transform events to Americano event format
-        let americano_events = self.transform_google_to_americano(g_events
-        );
+        let americano_events = self.transform_google_to_americano(g_events);
         Ok(americano_events)
     }
 
     fn transform_google_to_americano(&self, g_events: Events) -> AmericanoEvents {
-
-
         let mut v: Vec<AmericanoEvent> = Vec::with_capacity(g_events.items.capacity());
         for g_event in g_events.items.iter() {
             // Some ad hoc validation
-            if g_event.start.is_none() || g_event.start.as_ref().unwrap().date_time.is_none() 
-                || g_event.end.is_none() || g_event.end.as_ref().unwrap().date_time.is_none() 
+            if g_event.start.is_none()
+                || g_event.start.as_ref().unwrap().date_time.is_none()
+                || g_event.end.is_none()
+                || g_event.end.as_ref().unwrap().date_time.is_none()
                 || g_event.creator.email.is_none()
-                || g_event.creator.display_name.is_none() {
+                || g_event.creator.display_name.is_none()
+            {
                 continue;
             }
 
-            // TODO 
+            // TODO
             // do some useful transformations, like resolve recurrance dates
 
-            let start_datetime = g_event.start.as_ref().unwrap().date_time
-                                            .as_ref().unwrap().clone();
-            let end_datetime = g_event.end.as_ref().unwrap().date_time
-                                            .as_ref().unwrap().clone();
+            let start_datetime = g_event
+                .start
+                .as_ref()
+                .unwrap()
+                .date_time
+                .as_ref()
+                .unwrap()
+                .clone();
+            let end_datetime = g_event
+                .end
+                .as_ref()
+                .unwrap()
+                .date_time
+                .as_ref()
+                .unwrap()
+                .clone();
 
             let creator_email = g_event.creator.email.as_ref().unwrap().clone();
             let creator_name = g_event.creator.display_name.as_ref().unwrap().clone();
@@ -115,7 +125,7 @@ impl Calendar {
             let event = AmericanoEvent {
                 summary: g_event.summary.clone(),
                 description: g_event.description.clone(),
-                location: g_event.location.clone(), 
+                location: g_event.location.clone(),
                 creator_email: creator_email,
                 creator_name: creator_name,
                 start_datetime: start_datetime,
@@ -124,9 +134,7 @@ impl Calendar {
             v.push(event);
         }
 
-       AmericanoEvents {
-            events: v,
-       }
+        AmericanoEvents { events: v }
     }
 
     async fn events_google_api(&self) -> anyhow::Result<Events> {
