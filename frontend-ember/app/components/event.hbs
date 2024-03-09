@@ -16,7 +16,7 @@
       <span>Creator:</span> {{@event.creatorName}} / {{@event.creatorEmail}}
     </div>
     <div class="detail">
-      <span>Description:</span> {{@event.description}}
+      <span>Description:</span> {{this.formatDescription @event.description}}
     </div>
   </div>
 </article>
