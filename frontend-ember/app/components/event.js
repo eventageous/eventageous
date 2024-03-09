@@ -13,6 +13,13 @@ export default class Event extends Component {
         return location;
     }
 
+    formatRecurrence(recurrance) {
+        if (recurrance) {
+            return 'Recurring';
+        }
+        return 'One-time';
+    }
+
     formatDescription(description) {
         // TODO: stuff
         return description;

@@ -27,6 +27,7 @@ pub struct Event {
     pub start_timezone: String,
     pub end_datetime: String,
     pub end_timezone: String,
+    pub recurrence: bool,
 }
 
 impl From<&Arc<Configuration>> for Calendar {

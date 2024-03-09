@@ -26,6 +26,7 @@ pub struct Event {
     pub creator: Creator,
     pub start: Option<EventDate>,
     pub end: Option<EventDate>,
+    pub recurring_event_id: Option<String>,
     pub original_start_time: Option<EventDate>,
 }
 

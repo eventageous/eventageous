@@ -2,12 +2,8 @@
 <h2>Upcoming events</h2>
 
 <div class="events">
-    <ul class="event">
-        {{#each @model as |event|}}
-            <li>
-                <Event @event={{event}} />
-            </li>
-        {{/each}}
-    </ul>
+    {{#each @model as |event|}}
+    <Event @event={{event}} />
+    {{/each}}
 </div>
 </Base>

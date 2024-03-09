@@ -56,6 +56,8 @@ pub mod calendar_transformer {
             let creator_email = g_event.creator.email.as_ref().unwrap().clone();
             let creator_name = g_event.creator.display_name.as_ref().unwrap().clone();
 
+            let recurrance = g_event.recurring_event_id.is_some();
+
             let event = Event {
                 summary: g_event.summary.clone(),
                 description: g_event.description.clone(),
@@ -66,6 +68,7 @@ pub mod calendar_transformer {
                 start_timezone: start_timezone,
                 end_datetime: end_datetime,
                 end_timezone: end_timezone,
+                recurrence: recurrance,
             };
             v.push(event);
         }

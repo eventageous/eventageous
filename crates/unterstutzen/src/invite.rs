@@ -97,12 +97,7 @@ impl CalendarEmail {
             date: None,
             time_zone: None,
         });
-        // TODO: not sure this should be set for parsing this
-        let original_start = event.property("DTSTART").map(|s| EventDate {
-            date_time: Some(s),
-            date: None,
-            time_zone: None,
-        });
+
         Ok(Event {
             summary: summary,
             description: description,
@@ -110,7 +105,8 @@ impl CalendarEmail {
             creator,
             start,
             end,
-            original_start_time: original_start,
+            original_start_time: None,
+            recurring_event_id: None,
         })
     }
 }
