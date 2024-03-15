@@ -1,5 +1,5 @@
-# Americano
+# Eventageous
 
 Experimental calendaring software 🤘
 
-[Read more](https://nikomatsakis.github.io/americano)
+[Read more](https://eventageous.github.io/eventageous/)
