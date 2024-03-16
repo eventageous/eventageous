@@ -16,6 +16,7 @@
 
 # testing
 /public/api/events.json
+/public/api/events
 
 # ember-try
 /.node_modules.ember-try/
