@@ -118,6 +118,10 @@ p {
   }
 }
 
+
+/**
+ * Login
+ */
 .login-button-container {
     text-decoration: none;
     color: #fff;
@@ -127,19 +131,33 @@ p {
     top: 10px;
     right: 50px;
     float: right;
+
+
+  button {
+    background-color: white;
+    border: 1px solid #ccc; /* Example styling; customize as needed */
+    padding: 8px 16px;
+    cursor: pointer;
+    float: right;
   }
 
-.login-button {
-  background-color: white;
-  border: 1px solid #ccc; /* Example styling; customize as needed */
-  padding: 8px 16px;
-  cursor: pointer;
-  float: right;
+  button:hover {
+    background-color: #f9f9f9; /* Slight change on hover for better UX */
+  }
+
+  p {
+    text-decoration: none;
+    padding: 0 15px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    display: inline-block;
+    position: relative;
+    bottom: 5px;
+    padding: 14px 16px;
+  }
 }
 
-.login-button button:hover {
-  background-color: #f9f9f9; /* Slight change on hover for better UX */
-}
 
 /** Events **/
 

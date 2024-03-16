@@ -1,5 +1,9 @@
 <div class="login-button-container">
-    <button type="button" class="login-button" {{on "click" this.redirectToLogin}}>
-        Login with GitHub
-    </button>
+    {{#if this.session.isLoggedIn}}
+        <p>Hi, user!</p>
+    {{else}}
+        <button type="button" {{on "click" this.redirectToLogin}}>
+            Login with GitHub
+        </button>
+    {{/if}}
 </div>
