@@ -116,23 +116,29 @@ p {
     position: relative;
     bottom: 5px;
   }
+}
 
-  button {
-    margin-right: 15px;
+.login-button-container {
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
     position: relative;
-    top: -1px;
-    left: -5px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    background-color: #262626;
-    cursor: pointer;
-    opacity: 1;
+    top: 10px;
+    right: 50px;
+    float: right;
   }
 
-  button:hover {
-    background-color: #111;
-    opacity: 1;
-  }
+.login-button {
+  background-color: white;
+  border: 1px solid #ccc; /* Example styling; customize as needed */
+  padding: 8px 16px;
+  cursor: pointer;
+  float: right;
+}
+
+.login-button button:hover {
+  background-color: #f9f9f9; /* Slight change on hover for better UX */
 }
 
 /** Events **/
