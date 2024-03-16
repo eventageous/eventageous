@@ -1,19 +1,19 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { service } from '@ember/service';
 
 export default class SessionService extends Service {
-
+    // TODO: who will set this value?
     @tracked isLoggedIn = false;
 
     get isLoggedIn() {
         return this.isLoggedIn;
     }
 
-    async login() {
-        let response = await fetch('/auth/login');
-
+    login() {
         // pretend we're logged in
         this.isLoggedIn = true;
-        console.log("Pretend we're logged in");
+        console.log("Let's login!");
+        window.location.href = '/auth/login';
     }
 }
