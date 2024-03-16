@@ -2,7 +2,7 @@
 
 module.exports = function (environment) {
   const ENV = {
-    modulePrefix: 'americano-frontend',
+    modulePrefix: 'eventageous-frontend',
     environment,
     rootURL: '/',
     locationType: 'history',

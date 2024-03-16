@@ -1,8 +1,8 @@
 {
-  "name": "americano-frontend",
+  "name": "eventageous-frontend",
   "version": "0.0.0",
   "private": true,
-  "description": "Small description for americano-frontend goes here",
+  "description": "Front-end for Eventageous app",
   "repository": "",
   "license": "MIT",
   "author": "",

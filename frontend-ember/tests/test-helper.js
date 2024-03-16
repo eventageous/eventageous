@@ -1,5 +1,5 @@
-import Application from 'americano-frontend/app';
-import config from 'americano-frontend/config/environment';
+import Application from 'eventageous-frontend/app';
+import config from 'eventageous-frontend/config/environment';
 import * as QUnit from 'qunit';
 import { setApplication } from '@ember/test-helpers';
 import { setup } from 'qunit-dom';

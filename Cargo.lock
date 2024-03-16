@@ -27,23 +27,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "americano"
-version = "0.1.0"
-dependencies = [
- "axum 0.7.4",
- "chrono",
- "mail-parser",
- "serde",
- "shuttle-axum",
- "shuttle-runtime",
- "shuttle-secrets",
- "tokio",
- "tower-http",
- "tracing",
- "unterstutzen",
-]
-
-[[package]]
 name = "android-tzdata"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -401,6 +384,23 @@ checksum = "a258e46cdc063eb8519c00b9fc845fc47bcfca4130e2f08e88665ceda8474245"
 dependencies = [
  "libc",
  "windows-sys 0.52.0",
+]
+
+[[package]]
+name = "eventageous"
+version = "0.1.0"
+dependencies = [
+ "axum 0.7.4",
+ "chrono",
+ "mail-parser",
+ "serde",
+ "shuttle-axum",
+ "shuttle-runtime",
+ "shuttle-secrets",
+ "tokio",
+ "tower-http",
+ "tracing",
+ "unterstutzen",
 ]
 
 [[package]]
