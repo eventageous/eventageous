@@ -11,7 +11,7 @@ The front-end is based on ember. If you are making changes there you will need t
 
 ## Secrets
 
-Americano requires access to a Google calendar that is used as the backend. This is configuring using [Shuttle secrets](https://docs.shuttle.rs/resources/shuttle-secrets). You can configure the calendar via a `Secrets.toml` (or `Secrets.dev.toml`) like:
+Eventageous requires access to a Google calendar that is used as the backend. This is configuring using [Shuttle secrets](https://docs.shuttle.rs/resources/shuttle-secrets). You can configure the calendar via a `Secrets.toml` (or `Secrets.dev.toml`) like:
 
 ```
 GOOGLE_API_KEY = "XXXX"

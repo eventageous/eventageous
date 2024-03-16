@@ -1,4 +1,4 @@
-# How to setup your system to contribute to Americano
+# How to setup your system to contribute to Eventageous
 
 - Install NPM version documented in the `.tool-versions` file (as of this writing, 20)
   - You can use [asdf-vm](https://asdf-vm.com/) if that's your thing
@@ -12,7 +12,7 @@
 
 ## Secrets
 
-Americano requires access to a Google calendar that is used as the backend. This is configuring using [Shuttle secrets](https://docs.shuttle.rs/resources/shuttle-secrets). You can configure the calendar via a `Secrets.toml` (or `Secrets.dev.toml`) like:
+Eventageous requires access to a Google calendar that is used as the backend. This is configuring using [Shuttle secrets](https://docs.shuttle.rs/resources/shuttle-secrets). You can configure the calendar via a `Secrets.toml` (or `Secrets.dev.toml`) like:
 
 ```
 GOOGLE_API_KEY = "XXXX"

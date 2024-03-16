@@ -1,6 +1,6 @@
 # Vision
 
-Americano aims to be a convenient, lightweight way for open-source communities to track their calendar.
+Eventageous aims to be a convenient, lightweight way for open-source communities to track their calendar.
 
 ## Goals
 

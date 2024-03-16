@@ -1,11 +1,11 @@
 
-# How to setup a new Americano instance
+# How to setup a new Eventageous instance
 
 
 
 ## Create a Google calendar
 
-Americano uses a Google calendar as its data store.
+Eventageous uses a Google calendar as its data store.
 The existence of this calendar is an implementation detail and should not be exposed to users.
 Once you have setup the calendar, [create API keys as described here](./contribute/setup.md#secrets).
 

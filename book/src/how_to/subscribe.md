@@ -22,7 +22,7 @@ You can also receive invites to all events organized by a particular team. [See 
 
 ![Status: Unimplemented](https://img.shields.io/badge/Status-Unimplemented-red)
 
-If you don't wish to receive personal ivnites, you can export an ICS file that you can add to your calendar. This can be convenient to see what is scheduled without having to accept/decline invitations or have those items show up as busy on your calendar.
+If you don't wish to receive personal invites, you can export an ICS file that you can add to your calendar. This can be convenient to see what is scheduled without having to accept/decline invitations or have those items show up as busy on your calendar.
 
 Simply add the URL `https://calendar.example.org/ics/team.ics` and add it to your calendar.
 
