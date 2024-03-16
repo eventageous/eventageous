@@ -1,4 +1,4 @@
-use axum::{extract::State, routing::get, Json, Router};
+use axum::{extract::State, http::Uri, response::Redirect, routing::get, Json, Router};
 use serde::Serialize;
 use shuttle_secrets::SecretStore;
 use std::sync::Arc;
@@ -17,6 +17,8 @@ async fn main(#[shuttle_secrets::Secrets] secret_store: SecretStore) -> shuttle_
     let router = Router::new()
         .nest_service("/", ServeDir::new("dist"))
         .route("/api/events", get(handler))
+        .route("/auth/login", get(github_auth_handler))
+        .route("/auth/callback", get(github_login_callback))
         .with_state(config);
 
     Ok(router.into())
@@ -38,4 +40,16 @@ async fn handler(State(config): State<Arc<Configuration>>) -> Json<Response> {
     //tracing::info!("{}", serde_json::to_string_pretty(&response).unwrap());
 
     Json(response)
+}
+
+async fn github_auth_handler(State(config): State<Arc<Configuration>>) -> Redirect {
+    let client_id = "not_a_client_id";
+    tracing::info!("Pretending to redirect to GitHub with {}!", client_id);
+
+    let uri = "/auth/callback";
+    Redirect::temporary(uri)
+}
+
+async fn github_login_callback(State(config): State<Arc<Configuration>>) {
+    tracing::info!("Pretending we had a successful login!");
 }

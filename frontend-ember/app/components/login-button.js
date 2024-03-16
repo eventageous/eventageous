@@ -4,8 +4,7 @@ import { action } from '@ember/object';
 export default class LoginButtonComponent extends Component {
 
     @action
-    redirectToLogin() {
-        alert("Not yet! :-)");
-        console.log("Not yet! :-)");
+    async redirectToLogin() {
+        let response = await fetch('/auth/login');
     }
 }
