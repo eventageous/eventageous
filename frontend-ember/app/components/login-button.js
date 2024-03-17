@@ -7,11 +7,6 @@ export default class LoginButtonComponent extends Component {
 
     @action
     async redirectToLogin() {
-        console.log("Redirecting to login");
         this.session.login();
-    }
-
-    get isLoggedIn() {
-        return this.session.isLoggedIn;
     }
 }

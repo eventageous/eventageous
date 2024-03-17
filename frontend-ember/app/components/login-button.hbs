@@ -1,5 +1,5 @@
 <div class="login-button-container">
-    {{#if this.session.isLoggedIn}}
+    {{#if this.session.loggedIn}}
         <p>Hi, user!</p>
     {{else}}
         <button type="button" {{on "click" this.redirectToLogin}}>
