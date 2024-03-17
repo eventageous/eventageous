@@ -4,6 +4,7 @@ import { service } from '@ember/service';
 
 export default class SessionService extends Service {
     @tracked isLoggedIn = false;
+    @tracked userEmail = null;
 
     login() {
         if (this.isLoggedIn) {

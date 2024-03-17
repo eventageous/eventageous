@@ -1,6 +1,6 @@
 <div class="login-button-container">
     {{#if this.session.loggedIn}}
-        <p>Hi, user!</p>
+        <p>Hi, {{this.session.userEmail}}!</p>
     {{else}}
         <button type="button" {{on "click" this.redirectToLogin}}>
             Login with GitHub

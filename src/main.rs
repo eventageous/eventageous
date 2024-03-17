@@ -1,14 +1,14 @@
 use axum::extract::Query;
 use axum::{
-    error_handling::HandleErrorLayer, extract::State, response::IntoResponse, response::Redirect,
-    routing::get, BoxError, Extension, Json, Router,
+    extract::State, response::IntoResponse, response::Redirect, routing::get, BoxError, Extension,
+    Json, Router,
 };
-
 use oauth2::reqwest::async_http_client;
 use oauth2::{
     basic::BasicClient, AuthUrl, AuthorizationCode, Client, ClientId, ClientSecret, CsrfToken,
     Scope, TokenResponse, TokenUrl,
 };
+use reqwest::Client as ReqwestClient;
 use serde::Deserialize;
 use serde::Serialize;
 use shuttle_secrets::SecretStore;
@@ -21,7 +21,6 @@ use unterstutzen::Configuration;
 use unterstutzen::Events;
 use unterstutzen::OAuthConfig;
 
-const TOKEN_KEY: &str = "token";
 const USER_KEY: &str = "user";
 const CRSF_TOKEN: &str = "csrf";
 
@@ -90,6 +89,7 @@ fn create_basic_client_from_config(oauth_config: &OAuthConfig) -> BasicClient {
 struct Response {
     data: Events,
     authed: bool, // don't do this for realz, just for testing
+    email: String,
 }
 
 async fn handler(State(config): State<Arc<Configuration>>, session: Session) -> Json<Response> {
@@ -98,13 +98,15 @@ async fn handler(State(config): State<Arc<Configuration>>, session: Session) -> 
     let calendar = Calendar::from(&config);
     let events = calendar.events().await.unwrap();
     tracing::info!("Got data from Calenar API!");
-    //tracing::info!("{}", serde_json::to_string_pretty(&response).unwrap());
 
+    // Shoving this data in this response for now, should handle properly
     let logged_in = logged_in(&session).await;
-    tracing::info!("Is user logged in: {}", logged_in);
+    let email = get_user_email_from_session(&session).await;
+    tracing::info!("Logged in {} /email {}", logged_in, email);
     let response = Response {
         data: events,
         authed: logged_in,
+        email: email,
     };
 
     Json(response)
@@ -115,9 +117,18 @@ async fn logged_in(session: &Session) -> bool {
     user.is_some()
 }
 
+async fn get_user_email_from_session(session: &Session) -> String {
+    let user: Option<User> = session.get(USER_KEY).await.unwrap();
+    if user.is_some() {
+        let user = user.unwrap();
+        return user.email;
+    }
+    return "no email".to_string();
+}
+
 #[derive(Default, Deserialize, Serialize)]
 struct User {
-    name: String,
+    email: String,
     token: String,
 }
 
@@ -130,7 +141,7 @@ async fn github_auth_handler(
     // Pretend we logged in
     if PRETEND_TO_LOGIN {
         let user = User {
-            name: "test".to_string(),
+            email: "test".to_string(),
             token: "token".to_string(),
         };
         session.insert(USER_KEY, user).await.unwrap();
@@ -149,7 +160,6 @@ async fn github_auth_handler(
     // Generate the authorization URL
     let (authorize_url, csrf_state) = client
         .authorize_url(CsrfToken::new_random)
-        // Add the email scope
         .add_scope(Scope::new("user:email".to_string()))
         .url();
 
@@ -170,33 +180,111 @@ async fn github_login_callback(
     session: Session,
 ) -> impl IntoResponse {
     tracing::info!("github_login_callback: session: {:?}", session.id());
-    tracing::info!("Callback from GitHub! {} / {}", params.code, params.state);
 
     let code = params.code;
     let state = params.state;
 
-    let csrf_state: String = session.get(CRSF_TOKEN).await.unwrap().unwrap();
-    if state != csrf_state {
+    let csrf_state: Option<String> = session.get(CRSF_TOKEN).await.unwrap();
+    if csrf_state.is_none() {
+        tracing::error!("No CSRF token in session!");
+        return Redirect::temporary("/");
+    }
+    if state != csrf_state.unwrap() {
         tracing::error!("CSRF token mismatch!");
-        return Redirect::temporary("/auth/login");
+        return Redirect::temporary("/");
     }
 
     // Exchange the code with a token and store it in the session
-    let token = client
+    let token_response = client
         .exchange_code(AuthorizationCode::new(code))
         .request_async(async_http_client)
         .await
         .unwrap();
 
-    let token = token.access_token().secret();
+    let token = token_response.access_token();
+    let user_email = get_user_email(token.secret()).await.unwrap();
+
+    tracing::info!("Got user email! {:?}", user_email.to_string());
+
     let user = User {
-        name: "test".to_string(),
-        token: token.to_string(),
+        email: user_email,
+        token: "pretend-token".to_string(), // store the token in a cookie, not here in plain text
     };
-
-    tracing::info!("Got token from GitHub! {:?}", "secret!");
-
     session.insert(USER_KEY, user).await.unwrap();
 
     Redirect::temporary("/")
+}
+
+#[derive(Debug, Deserialize)]
+struct Email {
+    email: String,
+    primary: bool,
+    verified: bool,
+}
+
+// This is a first draft, need to handle errors properly, maybe put this in another mod
+async fn get_user_email(token: &str) -> Result<String, BoxError> {
+    let user_emails_url = "https://api.github.com/user/emails";
+
+    let email_response: reqwest::Response = ReqwestClient::new()
+        .get(user_emails_url)
+        .header("User-Agent", "Eventageous")
+        .header("Accept", "application/json")
+        .bearer_auth(token)
+        .send()
+        .await
+        .unwrap();
+
+    //tracing::info!("Got email_response from GitHub! {:?}", email_response);
+    match email_response.status() {
+        reqwest::StatusCode::OK => {
+            tracing::info!("Got emails from GitHub, will try to parse");
+            // Handle the successful response here
+            let emails = email_response.text().await.unwrap();
+            tracing::info!("JSON {:?}", emails);
+            let emails: Vec<Email> = serde_json::from_str(&emails).unwrap();
+
+            // check for primary and verified emails  and return the first one
+            for email in emails {
+                if email.primary && email.verified {
+                    return Ok(email.email);
+                }
+            }
+        }
+        reqwest::StatusCode::FORBIDDEN => {
+            tracing::error!("Received a 403 Forbidden response");
+            if let Some(rate_limit_remaining) =
+                email_response.headers().get("X-RateLimit-Remaining")
+            {
+                if rate_limit_remaining == "0" {
+                    let rate_limit_reset =
+                        email_response.headers().get("X-RateLimit-Reset").unwrap();
+                    let reset_time = std::time::UNIX_EPOCH
+                        + std::time::Duration::from_secs(
+                            rate_limit_reset.to_str().unwrap().parse::<u64>().unwrap(),
+                        );
+                    tracing::error!("Rate limit exceeded, will reset at {:?}", reset_time);
+                    // Handle the rate limit exceeded case here
+                }
+            }
+        }
+        reqwest::StatusCode::UNAUTHORIZED => {
+            tracing::error!("Received a 401 Unauthorized response");
+            // Handle the 401 Unauthorized response here
+        }
+        _ => {
+            tracing::error!(
+                "Received an unexpected HTTP response: {}",
+                email_response.status()
+            );
+            // Handle other unexpected responses here
+        }
+    }
+
+    /* Err(Box::new(std::io::Error::new(
+        std::io::ErrorKind::Other,
+        "Failed to get user emails",
+    )))*/
+
+    return Ok("no email".to_string());
 }
