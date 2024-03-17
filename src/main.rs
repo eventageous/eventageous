@@ -1,9 +1,17 @@
+use axum::extract::Query;
 use axum::{
-    extract::State, response::IntoResponse, response::Redirect, routing::get, Json, Router,
+    extract::State, response::IntoResponse, response::Redirect, routing::get, Extension, Json,
+    Router,
 };
 //use axum_extra::extract::{cookie, cookie::Key};
+use async_session::{MemoryStore, Session};
 use oauth2::basic::BasicClient;
-use oauth2::{AuthUrl, ClientId, ClientSecret, CsrfToken, Scope, TokenUrl};
+use oauth2::http::Request;
+use oauth2::reqwest::async_http_client;
+use oauth2::{
+    AuthUrl, AuthorizationCode, Client, ClientId, ClientSecret, CsrfToken, Scope, TokenUrl,
+};
+use serde::Deserialize;
 use serde::Serialize;
 use shuttle_secrets::SecretStore;
 use std::sync::Arc;
@@ -32,12 +40,13 @@ async fn main(#[shuttle_secrets::Secrets] secret_store: SecretStore) -> shuttle_
         "https://github.com/login/oauth/access_token".to_string(),
         oauth2_callback_url.to_string(),
     ));
+    let client = create_basic_client_from_config(&oauth_config);
 
     // Create a route for the GitHub auth handler
     let auth_router = Router::new()
         .route("/login", get(github_auth_handler))
         .route("/callback", get(github_login_callback))
-        .with_state(oauth_config);
+        .layer(Extension(client));
 
     // Configure the routes
     let router = Router::new()
@@ -76,10 +85,9 @@ async fn handler(State(config): State<Arc<Configuration>>) -> Json<Response> {
     Json(response)
 }
 
-async fn github_auth_handler(State(oauth_config): State<Arc<OAuthConfig>>) -> impl IntoResponse {
+async fn github_auth_handler(Extension(client): Extension<BasicClient>) -> impl IntoResponse {
     // Create an OAuth2 client
-    tracing::info!("Creating OAuth2 client");
-    let client = create_basic_client_from_config(&oauth_config);
+    tracing::info!("Going to redirect to GitHub!");
 
     // Generate the authorization URL
     let (authorize_url, _csrf_state) = client
@@ -91,8 +99,33 @@ async fn github_auth_handler(State(oauth_config): State<Arc<OAuthConfig>>) -> im
     Redirect::temporary(authorize_url.as_str())
 }
 
-async fn github_login_callback(State(oauth_config): State<Arc<OAuthConfig>>) {
-    tracing::info!("Callback from GitHub!");
+#[derive(Debug, Deserialize)]
+struct CallbackQuery {
+    code: String,
+    state: String,
+}
 
-    // TODO: parse the code and state from the query parameters, direct back to the app
+async fn github_login_callback(
+    Extension(client): Extension<BasicClient>,
+    Query(params): Query<CallbackQuery>,
+) -> impl IntoResponse {
+    tracing::info!("Callback from GitHub! {} / {}", params.code, params.state);
+
+    let code = params.code;
+    let state = params.state;
+
+    // Exchange the code with a token and store it in the session
+    let token = client
+        .exchange_code(AuthorizationCode::new(code))
+        .request_async(async_http_client)
+        .await
+        .unwrap();
+
+    tracing::info!("Got token from GitHub! {:?}", token);
+
+    // Store the token in the session, and make the frontend know what's up
+    //session.insert("github_token", token.access_token().secret().to_string());
+
+    // TODO: Store the token in the session
+    Redirect::temporary("/")
 }
