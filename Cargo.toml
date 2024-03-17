@@ -21,5 +21,4 @@ anyhow = "1.0.81"
 thiserror = "1.0.58"
 shuttle-metadata = "0.41.0"
 
-[package.metadata.shuttle.dev]
-env = { GITHUB_CALLBACK_URL = "http://localhost:3000/auth/github/callback" }
+
