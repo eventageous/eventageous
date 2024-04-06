@@ -13,7 +13,6 @@ use tower_sessions::{Expiry, MemoryStore, Session, SessionManagerLayer};
 use crate::calendar::Calendar;
 
 mod calendar;
-mod calendar_transformer;
 mod config;
 mod google_calendar;
 mod invite;
