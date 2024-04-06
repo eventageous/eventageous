@@ -17,7 +17,7 @@ mod auth;
 mod calendar;
 mod config;
 mod oauth_config;
-mod user_auth;
+mod user_session;
 
 // For testing, should be defined on a cookie or something
 const SESSION_LENGTH_SECONDS: i64 = 60 * 2;
@@ -47,8 +47,8 @@ pub async fn eventageous(secret_store: SecretStore) -> shuttle_axum::ShuttleAxum
 
     // Create a route for the GitHub auth handler
     let auth_router = Router::new()
-        .route("/login", get(user_auth::github_auth_handler))
-        .route("/callback", get(user_auth::github_login_callback))
+        .route("/login", get(user_session::github_auth_handler))
+        .route("/callback", get(user_session::github_login_callback))
         .layer(Extension(auth));
 
     // Configure the routes
@@ -83,8 +83,8 @@ async fn handler(State(config): State<Arc<Configuration>>, session: Session) -> 
     tracing::info!("Got data from Calenar API!");
 
     // Shoving this data in this response for now, should handle properly
-    let logged_in = user_auth::logged_in(&session).await;
-    let email = user_auth::get_user_email_from_session(&session).await;
+    let logged_in = user_session::logged_in(&session).await;
+    let email = user_session::get_user_email_from_session(&session).await;
     tracing::info!("Logged in {} /email {}", logged_in, email);
     let response = Response {
         data: events,
