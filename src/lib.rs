@@ -47,7 +47,7 @@ pub async fn eventageous(secret_store: SecretStore) -> shuttle_axum::ShuttleAxum
 
     // Create a route for the GitHub auth handler
     let auth_router = Router::new()
-        .route("/login", get(user_session::github_auth_handler))
+        .route("/login", get(user_session::login_handler))
         .route("/callback", get(user_session::github_login_callback))
         .layer(Extension(auth));
 
