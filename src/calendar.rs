@@ -3,9 +3,11 @@ use std::sync::Arc;
 use serde::{Deserialize, Serialize};
 
 use crate::config::Configuration;
-use crate::google_calendar::GoogleCalendar;
+use google_calendar::GoogleCalendar;
 use transformer::google_to_americano;
 
+mod google_calendar;
+mod invite;
 mod transformer;
 
 pub struct Calendar {

@@ -1,7 +1,7 @@
 use mail_parser::{Message, MessageParser, MimeHeaders};
 use tracing::info;
 
-use crate::google_calendar::{Creator, Event, EventDate};
+use super::google_calendar::{Creator, Event, EventDate};
 
 #[derive(Default, Debug)]
 pub struct CalendarEmail {
@@ -114,7 +114,7 @@ impl CalendarEmail {
 #[test]
 #[ignore = "FIXME"]
 fn test_parse_email() {
-    let input = include_str!("../test_data/invite.eml");
+    let input = include_str!("../../test_data/invite.eml");
     let calendar = CalendarEmail::parse_email(input).unwrap();
     expect_test::expect![""].assert_debug_eq(&calendar);
 }

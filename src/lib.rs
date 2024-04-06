@@ -14,8 +14,6 @@ use crate::calendar::Calendar;
 
 mod calendar;
 mod config;
-mod google_calendar;
-mod invite;
 mod oauth_config;
 mod user_auth;
 // For testing, should be defined on a cookie or something

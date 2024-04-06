@@ -1,7 +1,9 @@
 use crate::calendar::Event;
 use crate::calendar::Events;
 
-pub fn google_to_americano(g_events: crate::google_calendar::Events) -> Events {
+use super::google_calendar;
+
+pub fn google_to_americano(g_events: google_calendar::Events) -> Events {
     let mut v: Vec<Event> = Vec::with_capacity(g_events.items.capacity());
     for g_event in g_events.items.iter() {
         // Some ad hoc validation
