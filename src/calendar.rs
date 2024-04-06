@@ -4,7 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::config::Configuration;
 use crate::google_calendar::GoogleCalendar;
-use transformer::calendar_transformer::google_to_americano;
+use transformer::google_to_americano;
 
 mod transformer;
 
