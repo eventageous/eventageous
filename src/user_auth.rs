@@ -1,12 +1,7 @@
 use crate::auth::Auth;
-use crate::oauth_config::OAuthConfig;
 use axum::extract::Query;
 use axum::{response::IntoResponse, response::Redirect, BoxError, Extension};
-use oauth2::reqwest::async_http_client;
-use oauth2::{
-    basic::BasicClient, AuthUrl, AuthorizationCode, ClientId, ClientSecret, CsrfToken, Scope,
-    TokenResponse, TokenUrl,
-};
+use oauth2::TokenResponse;
 use reqwest::Client as ReqwestClient;
 use serde::Deserialize;
 use serde::Serialize;
@@ -59,18 +54,12 @@ pub async fn github_auth_handler(
         return Redirect::temporary("/");
     }
 
-    // Create an OAuth2 client
-    tracing::info!("Going to redirect to GitHub!");
-
     // Generate the authorization URL
-    let (authorize_url, csrf_state) = auth
-        .client
-        .authorize_url(CsrfToken::new_random)
-        .add_scope(Scope::new("user:email".to_string()))
-        .url();
+    let (authorize_url, csrf_state) = auth.generate_auth_url();
 
     session.insert(CRSF_TOKEN, csrf_state).await.unwrap();
 
+    tracing::info!("Going to redirect to GitHub!");
     Redirect::temporary(authorize_url.as_str())
 }
 
@@ -102,13 +91,7 @@ pub async fn github_login_callback(
 
     // Exchange the code with a token and store it in the session for future use
     let code = response.code;
-    let token_response = auth
-        .client
-        .exchange_code(AuthorizationCode::new(code))
-        .request_async(async_http_client)
-        .await
-        .unwrap();
-
+    let token_response = auth.exchange_code(code).await;
     let token = token_response.access_token();
 
     // Use the token to get the user email

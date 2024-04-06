@@ -1,25 +1,46 @@
 use crate::oauth_config::OAuthConfig;
-use oauth2::{basic::BasicClient, AuthUrl, ClientId, ClientSecret, TokenUrl};
+use oauth2::reqwest::async_http_client;
+use oauth2::{
+    basic::BasicClient, basic::BasicTokenType, AuthUrl, AuthorizationCode, ClientId, ClientSecret,
+    CsrfToken, EmptyExtraTokenFields, Scope, StandardTokenResponse, TokenUrl,
+};
+
+use reqwest::Url;
 use std::sync::Arc;
 
 #[derive(Clone, Debug)]
 pub struct Auth {
-    pub client: BasicClient,
-    pub config: Arc<OAuthConfig>,
+    client: BasicClient,
 }
 
 impl From<Arc<OAuthConfig>> for Auth {
     fn from(config: Arc<OAuthConfig>) -> Self {
-        let client = create_basic_client_from_config(&config);
-        Self { client, config }
+        let client_id = ClientId::new(config.client_id.to_string());
+        let client_secret = ClientSecret::new(config.client_secret.to_string());
+        let auth_url = AuthUrl::new(config.auth_url.to_string()).unwrap();
+        let token_url = TokenUrl::new(config.token_url.to_string()).unwrap();
+
+        let client = BasicClient::new(client_id, Some(client_secret), auth_url, Some(token_url));
+        Self { client }
     }
 }
 
-pub fn create_basic_client_from_config(oauth_config: &OAuthConfig) -> BasicClient {
-    let client_id = ClientId::new(oauth_config.client_id.to_string());
-    let client_secret = ClientSecret::new(oauth_config.client_secret.to_string());
-    let auth_url = AuthUrl::new(oauth_config.auth_url.to_string()).unwrap();
-    let token_url = TokenUrl::new(oauth_config.token_url.to_string()).unwrap();
+impl Auth {
+    pub fn generate_auth_url(&self) -> (Url, CsrfToken) {
+        self.client
+            .authorize_url(CsrfToken::new_random)
+            .add_scope(Scope::new("user:email".to_string()))
+            .url()
+    }
 
-    BasicClient::new(client_id, Some(client_secret), auth_url, Some(token_url))
+    pub async fn exchange_code(
+        &self,
+        code: String,
+    ) -> StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType> {
+        self.client
+            .exchange_code(AuthorizationCode::new(code))
+            .request_async(async_http_client)
+            .await
+            .unwrap()
+    }
 }
