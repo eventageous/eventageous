@@ -1,8 +1,7 @@
 use crate::auth::Auth;
 use axum::extract::Query;
-use axum::{response::IntoResponse, response::Redirect, BoxError, Extension};
+use axum::{response::IntoResponse, response::Redirect, Extension};
 use oauth2::TokenResponse;
-use reqwest::Client as ReqwestClient;
 use serde::Deserialize;
 use serde::Serialize;
 use tower_sessions::Session;
@@ -76,16 +75,10 @@ pub async fn github_login_callback(
 ) -> impl IntoResponse {
     tracing::info!("github_login_callback: session: {:?}", session.id());
 
-    // Check the CSRF state, this is to prevent CSRF attacks.
-    // The state must exist, AND be the same as the one we stored in the session.
+    // Validate state to prevent CSRF attacks
     let state = response.state;
-    let csrf_state: Option<String> = session.get(CRSF_TOKEN).await.unwrap();
-    if csrf_state.is_none() {
-        tracing::error!("No CSRF token in session!");
-        return Redirect::temporary("/");
-    }
-    if state != csrf_state.unwrap() {
-        tracing::error!("CSRF token mismatch!");
+    let state_is_valid = auth.validate_state(state.clone(), session.get(CRSF_TOKEN).await.unwrap());
+    if !state_is_valid {
         return Redirect::temporary("/");
     }
 
@@ -95,7 +88,10 @@ pub async fn github_login_callback(
     let token = token_response.access_token();
 
     // Use the token to get the user email
-    let user_email = get_user_email(token.secret()).await.unwrap();
+    let user_email = auth
+        .get_authenticated_user_email(token.secret())
+        .await
+        .unwrap();
     tracing::info!("Got user email! {:?}", user_email.to_string());
 
     // Store the user in the session
@@ -129,78 +125,4 @@ pub async fn get_user_email_from_session(session: &Session) -> String {
         return user.email;
     }
     return "no email".to_string();
-}
-
-#[derive(Debug, Deserialize)]
-struct Email {
-    email: String,
-    primary: bool,
-    verified: bool,
-}
-
-// This is a first draft, need to handle errors properly, maybe put this in another mod
-pub async fn get_user_email(token: &str) -> Result<String, BoxError> {
-    let user_emails_url = "https://api.github.com/user/emails";
-
-    let email_response: reqwest::Response = ReqwestClient::new()
-        .get(user_emails_url)
-        .header("User-Agent", "Eventageous")
-        .header("Accept", "application/json")
-        .bearer_auth(token)
-        .send()
-        .await
-        .unwrap();
-
-    //tracing::info!("Got email_response from GitHub! {:?}", email_response);
-    match email_response.status() {
-        reqwest::StatusCode::OK => {
-            tracing::info!("Got emails from GitHub, will try to parse");
-            // Handle the successful response here
-            let emails = email_response.text().await.unwrap();
-            tracing::info!("JSON {:?}", emails);
-            let emails: Vec<Email> = serde_json::from_str(&emails).unwrap();
-
-            // check for primary and verified emails  and return the first one
-            for email in emails {
-                if email.primary && email.verified {
-                    return Ok(email.email);
-                }
-            }
-        }
-        reqwest::StatusCode::FORBIDDEN => {
-            tracing::error!("Received a 403 Forbidden response");
-            if let Some(rate_limit_remaining) =
-                email_response.headers().get("X-RateLimit-Remaining")
-            {
-                if rate_limit_remaining == "0" {
-                    let rate_limit_reset =
-                        email_response.headers().get("X-RateLimit-Reset").unwrap();
-                    let reset_time = std::time::UNIX_EPOCH
-                        + std::time::Duration::from_secs(
-                            rate_limit_reset.to_str().unwrap().parse::<u64>().unwrap(),
-                        );
-                    tracing::error!("Rate limit exceeded, will reset at {:?}", reset_time);
-                    // Handle the rate limit exceeded case here
-                }
-            }
-        }
-        reqwest::StatusCode::UNAUTHORIZED => {
-            tracing::error!("Received a 401 Unauthorized response");
-            // Handle the 401 Unauthorized response here
-        }
-        _ => {
-            tracing::error!(
-                "Received an unexpected HTTP response: {}",
-                email_response.status()
-            );
-            // Handle other unexpected responses here
-        }
-    }
-
-    /* Err(Box::new(std::io::Error::new(
-        std::io::ErrorKind::Other,
-        "Failed to get user emails",
-    )))*/
-
-    return Ok("no email".to_string());
 }
