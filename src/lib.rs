@@ -1,3 +1,4 @@
+use auth::Auth;
 use axum::{extract::State, routing::get, Extension, Json, Router};
 
 use calendar::Events;
@@ -12,6 +13,7 @@ use tower_sessions::{Expiry, MemoryStore, Session, SessionManagerLayer};
 
 use crate::calendar::Calendar;
 
+mod auth;
 mod calendar;
 mod config;
 mod oauth_config;
@@ -38,7 +40,8 @@ pub async fn eventageous(secret_store: SecretStore) -> shuttle_axum::ShuttleAxum
         "https://github.com/login/oauth/access_token".to_string(),
         oauth2_callback_url.to_string(),
     ));
-    let client = user_auth::create_basic_client_from_config(&oauth_config);
+
+    let auth = Auth::from(oauth_config);
 
     let session_store = MemoryStore::default();
 
@@ -46,7 +49,7 @@ pub async fn eventageous(secret_store: SecretStore) -> shuttle_axum::ShuttleAxum
     let auth_router = Router::new()
         .route("/login", get(user_auth::github_auth_handler))
         .route("/callback", get(user_auth::github_login_callback))
-        .layer(Extension(client));
+        .layer(Extension(auth));
 
     // Configure the routes
     let router = Router::new()

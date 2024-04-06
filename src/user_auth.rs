@@ -1,3 +1,4 @@
+use crate::auth::Auth;
 use crate::oauth_config::OAuthConfig;
 use axum::extract::Query;
 use axum::{response::IntoResponse, response::Redirect, BoxError, Extension};
@@ -34,17 +35,8 @@ impl std::fmt::Debug for User {
     }
 }
 
-pub fn create_basic_client_from_config(oauth_config: &OAuthConfig) -> BasicClient {
-    let client_id = ClientId::new(oauth_config.client_id.to_string());
-    let client_secret = ClientSecret::new(oauth_config.client_secret.to_string());
-    let auth_url = AuthUrl::new(oauth_config.auth_url.to_string()).unwrap();
-    let token_url = TokenUrl::new(oauth_config.token_url.to_string()).unwrap();
-
-    BasicClient::new(client_id, Some(client_secret), auth_url, Some(token_url))
-}
-
 pub async fn github_auth_handler(
-    Extension(client): Extension<BasicClient>,
+    Extension(auth): Extension<Auth>,
     session: Session,
 ) -> impl IntoResponse {
     tracing::info!("github_auth_handler: session: {:?}", session.id());
@@ -71,7 +63,8 @@ pub async fn github_auth_handler(
     tracing::info!("Going to redirect to GitHub!");
 
     // Generate the authorization URL
-    let (authorize_url, csrf_state) = client
+    let (authorize_url, csrf_state) = auth
+        .client
         .authorize_url(CsrfToken::new_random)
         .add_scope(Scope::new("user:email".to_string()))
         .url();
@@ -88,7 +81,7 @@ pub struct CallbackParameters {
 }
 
 pub async fn github_login_callback(
-    Extension(client): Extension<BasicClient>,
+    Extension(auth): Extension<Auth>,
     Query(response): Query<CallbackParameters>,
     session: Session,
 ) -> impl IntoResponse {
@@ -109,7 +102,8 @@ pub async fn github_login_callback(
 
     // Exchange the code with a token and store it in the session for future use
     let code = response.code;
-    let token_response = client
+    let token_response = auth
+        .client
         .exchange_code(AuthorizationCode::new(code))
         .request_async(async_http_client)
         .await
