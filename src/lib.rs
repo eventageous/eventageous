@@ -16,6 +16,7 @@ mod calendar;
 mod config;
 mod oauth_config;
 mod user_auth;
+
 // For testing, should be defined on a cookie or something
 const SESSION_LENGTH_SECONDS: i64 = 60 * 2;
 

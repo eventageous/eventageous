@@ -19,8 +19,19 @@ const PRETEND_TO_LOGIN: bool = false;
 
 #[derive(Default, Deserialize, Serialize)]
 struct User {
+    id: i64,
     email: String,
     token: String,
+}
+
+impl std::fmt::Debug for User {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("User")
+            .field("id", &self.id)
+            .field("email", &self.email)
+            .field("token", &"[redacted]")
+            .finish()
+    }
 }
 
 pub fn create_basic_client_from_config(oauth_config: &OAuthConfig) -> BasicClient {
@@ -41,11 +52,13 @@ pub async fn github_auth_handler(
     // Pretend we logged in
     if PRETEND_TO_LOGIN {
         let user = User {
+            id: 1, // This should be a real ID
             email: "test".to_string(),
             token: "token".to_string(),
         };
         session.insert(USER_KEY, user).await.unwrap();
         tracing::info!("Bypassing login, prtending it worked");
+        log_user_session(&session).await;
     }
 
     // Check if the user is already logged in
@@ -69,21 +82,21 @@ pub async fn github_auth_handler(
 }
 
 #[derive(Debug, Deserialize)]
-pub struct CallbackQuery {
+pub struct CallbackParameters {
     code: String,
     state: String,
 }
 
 pub async fn github_login_callback(
     Extension(client): Extension<BasicClient>,
-    Query(params): Query<CallbackQuery>,
+    Query(response): Query<CallbackParameters>,
     session: Session,
 ) -> impl IntoResponse {
     tracing::info!("github_login_callback: session: {:?}", session.id());
 
-    let code = params.code;
-    let state = params.state;
-
+    // Check the CSRF state, this is to prevent CSRF attacks.
+    // The state must exist, AND be the same as the one we stored in the session.
+    let state = response.state;
     let csrf_state: Option<String> = session.get(CRSF_TOKEN).await.unwrap();
     if csrf_state.is_none() {
         tracing::error!("No CSRF token in session!");
@@ -94,7 +107,8 @@ pub async fn github_login_callback(
         return Redirect::temporary("/");
     }
 
-    // Exchange the code with a token and store it in the session
+    // Exchange the code with a token and store it in the session for future use
+    let code = response.code;
     let token_response = client
         .exchange_code(AuthorizationCode::new(code))
         .request_async(async_http_client)
@@ -102,17 +116,27 @@ pub async fn github_login_callback(
         .unwrap();
 
     let token = token_response.access_token();
-    let user_email = get_user_email(token.secret()).await.unwrap();
 
+    // Use the token to get the user email
+    let user_email = get_user_email(token.secret()).await.unwrap();
     tracing::info!("Got user email! {:?}", user_email.to_string());
 
+    // Store the user in the session
     let user = User {
+        id: 1, // This should be a real ID
         email: user_email,
-        token: "pretend-token".to_string(), // store the token in a cookie, not here in plain text
+        token: token.secret().to_string(), // store the token in a cookie?
     };
     session.insert(USER_KEY, user).await.unwrap();
 
+    log_user_session(&session).await;
+
     Redirect::temporary("/")
+}
+
+pub async fn log_user_session(session: &Session) {
+    let user: Option<User> = session.get(USER_KEY).await.unwrap();
+    tracing::info!("User: {:?}", user);
 }
 
 // This is hack, need cookie management and all that
