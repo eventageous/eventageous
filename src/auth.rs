@@ -126,12 +126,30 @@ impl Auth {
             .unwrap()
     }
 
-    // This is a first draft, need to handle errors properly, maybe put this in another mod
-    async fn get_authenticated_user_email(&self, token: &str) -> Result<String, BoxError> {
+    async fn get_authenticated_user_email(&self, token: &str) -> anyhow::Result<String> {
         let user_emails_url = "https://api.github.com/user/emails";
 
-        let email_response: reqwest::Response = ReqwestClient::new()
-            .get(user_emails_url)
+        let email_response = self.send_request(user_emails_url, token).await?;
+
+        tracing::info!("Got emails from GitHub, will try to parse");
+
+        let emails = email_response.text().await.unwrap();
+        tracing::info!("JSON {:?}", emails);
+        let emails: Vec<Email> = serde_json::from_str(&emails).unwrap();
+        // check for primary and verified emails  and return the first match
+        for email in emails {
+            if email.primary && email.verified {
+                return Ok(email.email);
+            }
+        }
+
+        // TODO: If no email, return an error
+        return Ok("no email!".to_string());
+    }
+
+    async fn send_request(&self, url: &str, token: &str) -> anyhow::Result<reqwest::Response> {
+        let response: reqwest::Response = ReqwestClient::new()
+            .get(url)
             .header("User-Agent", "Eventageous")
             .header("Accept", "application/json")
             .bearer_auth(token)
@@ -139,57 +157,38 @@ impl Auth {
             .await
             .unwrap();
 
-        //tracing::info!("Got email_response from GitHub! {:?}", email_response);
-        match email_response.status() {
+        match response.status() {
             reqwest::StatusCode::OK => {
-                tracing::info!("Got emails from GitHub, will try to parse");
-                // Handle the successful response here
-                let emails = email_response.text().await.unwrap();
-                tracing::info!("JSON {:?}", emails);
-                let emails: Vec<Email> = serde_json::from_str(&emails).unwrap();
-
-                // check for primary and verified emails  and return the first one
-                for email in emails {
-                    if email.primary && email.verified {
-                        return Ok(email.email);
-                    }
-                }
+                tracing::info!("Got response from GitHub");
+                return Ok(response);
             }
             reqwest::StatusCode::FORBIDDEN => {
                 tracing::error!("Received a 403 Forbidden response");
-                if let Some(rate_limit_remaining) =
-                    email_response.headers().get("X-RateLimit-Remaining")
+                if let Some(rate_limit_remaining) = response.headers().get("X-RateLimit-Remaining")
                 {
                     if rate_limit_remaining == "0" {
-                        let rate_limit_reset =
-                            email_response.headers().get("X-RateLimit-Reset").unwrap();
+                        let rate_limit_reset = response.headers().get("X-RateLimit-Reset").unwrap();
                         let reset_time = std::time::UNIX_EPOCH
                             + std::time::Duration::from_secs(
                                 rate_limit_reset.to_str().unwrap().parse::<u64>().unwrap(),
                             );
                         tracing::error!("Rate limit exceeded, will reset at {:?}", reset_time);
-                        // Handle the rate limit exceeded case here
+                        // Handle the rate limit exceeded case here if needed
                     }
                 }
+                return Err(anyhow::anyhow!("Received a 403 Forbidden response"));
             }
             reqwest::StatusCode::UNAUTHORIZED => {
                 tracing::error!("Received a 401 Unauthorized response");
-                // Handle the 401 Unauthorized response here
+                return Err(anyhow::anyhow!("Received a 401 Forbidden response"));
             }
             _ => {
                 tracing::error!(
                     "Received an unexpected HTTP response: {}",
-                    email_response.status()
+                    response.status()
                 );
-                // Handle other unexpected responses here
+                return Err(anyhow::anyhow!("Received an unexpected HTTP response"));
             }
         }
-
-        /* Err(Box::new(std::io::Error::new(
-            std::io::ErrorKind::Other,
-            "Failed to get user emails",
-        )))*/
-
-        return Ok("no email".to_string());
     }
 }
