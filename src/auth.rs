@@ -1,6 +1,4 @@
-use crate::auth;
 use crate::oauth_config::OAuthConfig;
-use axum::BoxError;
 use oauth2::reqwest::async_http_client;
 use oauth2::TokenResponse;
 use oauth2::{
@@ -54,10 +52,11 @@ impl From<Arc<OAuthConfig>> for Auth {
 
 impl Auth {
     pub fn generate_auth_url(&self) -> (Url, AuthState) {
+        let scope = Scope::new("user:email".to_string());
         let (url, crsf_token) = self
             .client
             .authorize_url(CsrfToken::new_random)
-            .add_scope(Scope::new("user:email".to_string()))
+            .add_scope(scope)
             .url();
         (
             url,

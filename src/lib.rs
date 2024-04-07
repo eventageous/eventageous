@@ -42,9 +42,6 @@ pub async fn eventageous(secret_store: SecretStore) -> shuttle_axum::ShuttleAxum
     ));
 
     let auth = Auth::from(oauth_config);
-
-    let session_store = MemoryStore::default();
-
     // Create a route for the GitHub auth handler
     let auth_router = Router::new()
         .route("/login", get(user_session::login_handler))
@@ -52,6 +49,7 @@ pub async fn eventageous(secret_store: SecretStore) -> shuttle_axum::ShuttleAxum
         .layer(Extension(auth));
 
     // Configure the routes
+    let session_store = MemoryStore::default();
     let router = Router::new()
         .nest_service("/", ServeDir::new("dist"))
         .route("/api/events", get(handler))
@@ -59,7 +57,7 @@ pub async fn eventageous(secret_store: SecretStore) -> shuttle_axum::ShuttleAxum
         .with_state(config)
         .layer(
             SessionManagerLayer::new(session_store)
-                .with_secure(false)
+                .with_secure(true)
                 .with_expiry(Expiry::OnInactivity(Duration::seconds(
                     SESSION_LENGTH_SECONDS,
                 ))),
@@ -77,6 +75,11 @@ struct Response {
 
 async fn handler(State(config): State<Arc<Configuration>>, session: Session) -> Json<Response> {
     tracing::info!("handler: session: {:?}", session.id());
+
+    if session.is_empty().await {
+        session.cycle_id().await.unwrap();
+        tracing::info!("handler: cycled id, does it exist now?: {:?}", session.id());
+    }
 
     let calendar = Calendar::from(&config);
     let events = calendar.events().await.unwrap();
