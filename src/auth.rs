@@ -1,3 +1,4 @@
+use crate::auth;
 use crate::oauth_config::OAuthConfig;
 use axum::BoxError;
 use oauth2::reqwest::async_http_client;
@@ -34,6 +35,11 @@ struct Email {
     verified: bool,
 }
 
+#[derive(Debug)]
+pub struct AuthenticatedUser {
+    pub email: String,
+}
+
 impl From<Arc<OAuthConfig>> for Auth {
     fn from(config: Arc<OAuthConfig>) -> Self {
         let client_id = ClientId::new(config.client_id.to_string());
@@ -65,7 +71,7 @@ impl Auth {
         &self,
         auth_state: Option<AuthState>,
         callback_state: CallbackState,
-    ) -> Option<String> {
+    ) -> Option<AuthenticatedUser> {
         // Validate state to prevent
         let state = callback_state.state;
         let state_is_valid = self.validate_state(state.clone(), auth_state);
@@ -91,7 +97,9 @@ impl Auth {
             .unwrap();
         tracing::info!("Got user email! {:?}", user_email.to_string());
 
-        return Option::Some(user_email);
+        let authenticated_user = AuthenticatedUser { email: user_email };
+
+        return Option::Some(authenticated_user);
     }
 
     // Check the CSRF state, this is to prevent CSRF attacks.

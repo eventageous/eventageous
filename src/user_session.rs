@@ -72,17 +72,18 @@ pub async fn github_login_callback(
     tracing::info!("github_login_callback: session: {:?}", session.id());
 
     let auth_state = session.get(AUTH_STATE).await.unwrap();
-    let user_email = auth.authenticate(auth_state, callback_state).await;
+    let authenticated_user = auth.authenticate(auth_state, callback_state).await;
 
-    // If there is email returned, authentication failed, redirect
-    if user_email.is_none() {
+    // If there is no uesr returned, authentication failed, redirect
+    if authenticated_user.is_none() {
         return Redirect::temporary("/");
     }
 
     // Store the user in the session
+    // Might not need this struct too, but leaving for now
     let user = User {
         id: 1, // This should be a real ID
-        email: user_email.unwrap(),
+        email: authenticated_user.unwrap().email.clone(),
     };
 
     session.insert(USER_KEY, user).await.unwrap();
