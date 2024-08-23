@@ -19,4 +19,8 @@ GOOGLE_API_KEY = "XXXX"
 GOOGLE_CALENDAR_ID = "YYY"
 ```
 
-Create an API key in your Google Cloud application, follow the _Credentials_ menu option and then _+ Create Credentials_ for _API Key_. Figuring out the details of how you want to set up your permissions and all the rest is an exercise to the reader.
+Create an API key in your Google Cloud application, follow the _Credentials_ menu option and then _+ Create Credentials_ for _API Key_. 
+
+Then enable the "Google Calendar API" and "Google Cloud APIs", set key to Restrict APIs, and add those 2 APIs.
+
+
